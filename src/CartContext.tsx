@@ -12,11 +12,13 @@ export interface Product {
 interface CartContextType {
   cart: Product[];
   addToCart: (product: Product) => void;
+  clearCart: () => void;
 }
 
 const CartContext = createContext<CartContextType>({
   cart: [],
   addToCart: () => {},
+  clearCart: () => {},
 });
 
 export const useCart = () => useContext(CartContext);
@@ -32,8 +34,12 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     setCart((prevCart) => [...prevCart, product]);
   };
 
+  const clearCart = () => {
+    setCart([]);
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart }}>
+    <CartContext.Provider value={{ cart, addToCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );

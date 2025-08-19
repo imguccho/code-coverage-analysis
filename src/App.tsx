@@ -8,6 +8,10 @@ import ProductDetails from './components/ProductDetails';
 import { CartProvider } from './CartContext';
 import AppHeader from './components/AppHeader';
 import CartScreen from './components/CartScreen';
+import CartSummary from './components/CartSummary';
+import CategoryScreen from './components/CategoryScreen';
+import NotFound from './components/NotFound';
+import ProfileScreen from './components/ProfileScreen';
 
 function App() {
   return (
@@ -23,6 +27,10 @@ function App() {
                 <Route path="/products/:id" element={<ProductDetails />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/cart" element={<CartScreen />} />
+                <Route path="/cart-summary" element={<CartSummary />} />
+                <Route path="/categories" element={<CategoryScreen />} />
+                <Route path="/profile" element={<ProfileScreen />} />
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </div>
           </main>
