@@ -4,18 +4,31 @@ import './App.css';
 import Home from './components/Home';
 import Products from './components/Products';
 import About from './components/About';
+import ProductDetails from './components/ProductDetails';
+import { CartProvider } from './CartContext';
+import AppHeader from './components/AppHeader';
+import CartScreen from './components/CartScreen';
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/about" element={<About />} />
-        </Routes>
-      </div>
-    </Router>
+    <CartProvider>
+      <Router>
+        <div className="App" style={{ minHeight: '100vh', width: '100vw', background: 'linear-gradient(135deg, #6a82fb 0%, #fc5c7d 100%)', display: 'flex', flexDirection: 'column' }}>
+          <AppHeader />
+          <main style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', padding: '2rem 0' }}>
+            <div style={{ width: '100%', maxWidth: '1100px', background: '#fff', borderRadius: '18px', boxShadow: '0 4px 32px rgba(0,0,0,0.10)', padding: '2.5rem 2rem', minHeight: 'calc(100vh - 120px)' }}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/products/:id" element={<ProductDetails />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/cart" element={<CartScreen />} />
+              </Routes>
+            </div>
+          </main>
+        </div>
+      </Router>
+    </CartProvider>
   );
 }
 
