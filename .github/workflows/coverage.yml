@@ -9,9 +9,9 @@ on:
         default: 'main'
         type: string
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, feature/* ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, feature/* ]
 
 jobs:
   coverage:
