@@ -12,35 +12,40 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
     steps:
+      # 1. Checkout repository
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 2. Setup Node
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
+      # 3. Install dependencies
       - name: Install dependencies
         run: npm ci
 
+      # 4. Run tests with coverage
       - name: Run tests and generate coverage
-        # If you want to pass a testPathPattern to run only specific tests,
-        # you can use the workflow input `componentPath` in the test command.
         run: |
           if [ -n "${{ github.event.inputs.componentPath }}" ]; then
-            # run tests matching the input (adjust for your test runner)
             npm test -- --testPathPattern="${{ github.event.inputs.componentPath }}" --coverage --coverageReporters=json-summary
           else
             npm test -- --coverage --coverageReporters=json-summary
           fi
 
-      - name: Show coverage file (sanity)
+      # 5. Debug: list coverage folder
+      - name: Show coverage folder contents
         run: |
-          ls -la coverage || true
+          echo "Contents of coverage folder:"
+          ls -R coverage || echo "No coverage directory found"
           [ -f coverage/coverage-summary.json ] && echo "coverage-summary.json exists"
 
-      - name: Upload coverage summary artifact
+      # 6. Upload entire coverage folder as artifact
+      - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: coverage/coverage-summary.json
+          path: coverage/**
+          if-no-files-found: error   # fail if no coverage file found
