@@ -1,0 +1,46 @@
+name: Test & Coverage (dispatch)
+
+on:
+  workflow_dispatch:
+    inputs:
+      componentPath:
+        description: 'Optional: testPathPattern or file path to focus tests'
+        required: false
+        default: ''
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests and generate coverage
+        # If you want to pass a testPathPattern to run only specific tests,
+        # you can use the workflow input `componentPath` in the test command.
+        run: |
+          if [ -n "${{ github.event.inputs.componentPath }}" ]; then
+            # run tests matching the input (adjust for your test runner)
+            npm test -- --testPathPattern="${{ github.event.inputs.componentPath }}" --coverage --coverageReporters=json-summary
+          else
+            npm test -- --coverage --coverageReporters=json-summary
+          fi
+
+      - name: Show coverage file (sanity)
+        run: |
+          ls -la coverage || true
+          [ -f coverage/coverage-summary.json ] && echo "coverage-summary.json exists"
+
+      - name: Upload coverage summary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/coverage-summary.json
