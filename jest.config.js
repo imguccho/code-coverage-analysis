@@ -1,7 +1,6 @@
 module.exports = {
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
-    'tests/**/*.{js,ts,jsx,tsx}',
     '!src/**/*.d.ts',
     '!src/index.tsx',
     '!src/reportWebVitals.ts',
@@ -15,8 +14,7 @@ module.exports = {
       statements: 80,
     },
   },
-  coverageReporters: ['text', 'lcov', 'html', 'json-summary'],
-  coverageDirectory: "coverage",
+  coverageReporters: ['text', 'lcov', 'html'],
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
   moduleNameMapping: {
