@@ -25,6 +25,7 @@ const AppHeader: React.FC = () => {
         <Link to="/profile" style={{ fontWeight: 600, color: '#333', textDecoration: 'none', fontSize: '1.1rem' }}>Profile</Link>
         <Link to="/categories" style={{ fontWeight: 600, color: '#333', textDecoration: 'none', fontSize: '1.1rem' }}>Categories</Link>
         <Link to="/cart-summary" style={{ fontWeight: 600, color: '#333', textDecoration: 'none', fontSize: '1.1rem' }}>Cart Summary</Link>
+        <Link to="/faq" style={{ fontWeight: 600, color: '#333', textDecoration: 'none', fontSize: '1.1rem' }}>FAQ</Link>
       </nav>
       <Link to="/cart" style={{ textDecoration: 'none' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: '#fff', borderRadius: '20px', padding: '0.5rem 1rem', boxShadow: '0 1px 4px rgba(0,0,0,0.07)', cursor: 'pointer' }}>
