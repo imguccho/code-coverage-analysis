@@ -9,9 +9,9 @@ on:
         default: 'main'
         type: string
   push:
-    branches: [ main, develop, 'coverage-fix-*' ]
+    branches: [ main, develop, 'feature/*' ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, 'feature/*' ]
 
 jobs:
   coverage:
@@ -73,3 +73,4 @@ jobs:
         echo "🌿 Branch: ${{ github.event.inputs.branch || github.ref_name }}"
 
       if: always()
+
