@@ -9,7 +9,7 @@ on:
         default: 'main'
         type: string
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, 'coverage-fix-*' ]
   pull_request:
     branches: [ main ]
 
@@ -71,4 +71,5 @@ jobs:
         echo "🎉 Coverage workflow completed successfully!"
         echo "📊 Coverage report available in artifacts"
         echo "🌿 Branch: ${{ github.event.inputs.branch || github.ref_name }}"
+
       if: always()
