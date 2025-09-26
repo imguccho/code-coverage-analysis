@@ -6,23 +6,23 @@ const FAQ: React.FC = () => {
   const faqItems = [
     {
       question: 'How do I add items to my cart?',
-      answer: 'Simply browse our products and click the "Add to Cart" button on any item you wish to purchase.'
+      answer: 'Simply browse our products and click the "Add to Cart" button on any item you wish to purchase.',
     },
     {
       question: 'How can I view my cart?',
-      answer: 'Click on the cart icon in the top right corner of the page or use the "Cart Summary" link in the navigation.'
+      answer: 'Click on the cart icon in the top right corner of the page or use the "Cart Summary" link in the navigation.',
     },
     {
       question: 'What payment methods do you accept?',
-      answer: 'We accept all major credit cards, PayPal, and other digital payment methods.'
+      answer: 'We accept all major credit cards, PayPal, and other digital payment methods.',
     },
     {
       question: 'How do I track my order?',
-      answer: 'Once your order is confirmed, you can track it from your profile section under "Order History".'
+      answer: 'Once your order is confirmed, you can track it from your profile section under "Order History".',
     },
     {
       question: 'What is your return policy?',
-      answer: 'We offer a 30-day return policy for most items. Please check individual product details for specific return information.'
+      answer: 'We offer a 30-day return policy for most items. Please check individual product details for specific return information.',
     }
   ];
 
@@ -56,7 +56,7 @@ const FAQ: React.FC = () => {
             }}
           >
             <h3 style={{ margin: 0 }}>{item.question}</h3>
-            <span>{openIndex === index ? '−' : '+'}</span>
+            <span>{openIndex === index ? '✓' : '+'}</span>
           </div>
           {openIndex === index && (
             <div style={{ padding: '1rem', backgroundColor: '#fff' }}>
