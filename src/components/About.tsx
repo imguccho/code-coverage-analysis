@@ -2,18 +2,18 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface TeamMember {
-  id: number;
-  name: string;
-  position: string;
-  department: string;
-  experience: number;
+  id: number; // Unique identifier for the team member
+  name: string; // Name of the team member
+  position: string; // Position held in the company
+  department: string; // Department of the team member
+  experience: number; // Years of experience
 }
 
 interface CompanyStat {
-  id: number;
-  label: string;
-  value: string;
-  description: string;
+  id: number; // Unique identifier for the company statistic
+  label: string; // Label for the statistic
+  value: string; // Value of the statistic
+  description: string; // Description of the statistic
 }
 
 const About: React.FC = () => {
@@ -45,11 +45,7 @@ const About: React.FC = () => {
     navigate('/products');
   };
 
-  const getExperienceLevel = (years: number): string => {
-    if (years >= 10) return 'Senior';
-    if (years >= 5) return 'Mid-level';
-    return 'Junior';
-  };
+  const getExperienceLevel = (years: number): string => years >= 10 ? 'Senior' : years >= 5 ? 'Mid-level' : 'Junior';
 
   return (
     <div className="about-container">
@@ -74,7 +70,7 @@ const About: React.FC = () => {
               <p className="stat-label">{stat.label}</p>
               <p className="stat-description">{stat.description}</p>
             </div>
-          ))}
+          ))} 
         </div>
       </div>
 
@@ -90,7 +86,7 @@ const About: React.FC = () => {
                 Experience: {member.experience} years ({getExperienceLevel(member.experience)})
               </p>
             </div>
-          ))}
+          ))} 
         </div>
       </div>
 
@@ -106,4 +102,4 @@ const About: React.FC = () => {
   );
 };
 
-export default About; 
+export default About;
