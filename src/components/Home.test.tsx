@@ -23,46 +23,46 @@ describe('Home Component', () => {
     expect(screen.getByText('Users List')).toBeInTheDocument();
   });
 
-  // test('renders all user cards with correct data', () => {
-  //   render(<Home />);
-  //   // Check if all users are rendered
-  //   expect(screen.getByText('John Doe')).toBeInTheDocument();
-  //   expect(screen.getByText('Jane Smith')).toBeInTheDocument();
-  //   expect(screen.getByText('Bob Johnson')).toBeInTheDocument();
-  //   expect(screen.getByText('Alice Brown')).toBeInTheDocument();
+  test('renders all user cards with correct data', () => {
+    render(<Home />);
+    // Check if all users are rendered
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+    expect(screen.getByText('Bob Johnson')).toBeInTheDocument();
+    expect(screen.getByText('Alice Brown')).toBeInTheDocument();
     
-  //   // Check if emails are rendered
-  //   expect(screen.getByText('Email: john@example.com')).toBeInTheDocument();
-  //   expect(screen.getByText('Email: jane@example.com')).toBeInTheDocument();
-  //   expect(screen.getByText('Email: bob@example.com')).toBeInTheDocument();
-  //   expect(screen.getByText('Email: alice@example.com')).toBeInTheDocument();
+    // Check if emails are rendered
+    expect(screen.getByText('Email: john@example.com')).toBeInTheDocument();
+    expect(screen.getByText('Email: jane@example.com')).toBeInTheDocument();
+    expect(screen.getByText('Email: bob@example.com')).toBeInTheDocument();
+    expect(screen.getByText('Email: alice@example.com')).toBeInTheDocument();
     
-  //   // Check if roles are rendered
-  //   expect(screen.getByText('Role: Admin')).toBeInTheDocument();
-  //   expect(screen.getAllByText('Role: User')).toHaveLength(2);
-  //   expect(screen.getByText('Role: Moderator')).toBeInTheDocument();
-  // });
+    // Check if roles are rendered
+    expect(screen.getByText('Role: Admin')).toBeInTheDocument();
+    expect(screen.getAllByText('Role: User')).toHaveLength(2);
+    expect(screen.getByText('Role: Moderator')).toBeInTheDocument();
+  });
 
-  // test('renders correct number of user cards', () => {
-  //   render(<Home />);
+  test('renders correct number of user cards', () => {
+    render(<Home />);
     
-  //   const userCards = screen.getAllByText(/Email:/);
-  //   expect(userCards).toHaveLength(4);
-  // });
+    const userCards = screen.getAllByText(/Email:/);
+    expect(userCards).toHaveLength(4);
+  });
 
-  // test('user cards contain all required information', () => {
-  //   render(<Home />);
+  test('user cards contain all required information', () => {
+    render(<Home />);
     
-  //   // Check first user card
-  //   const johnCard = screen.getByText('John Doe').closest('div');
-  //   expect(johnCard).toHaveTextContent('john@example.com');
-  //   expect(johnCard).toHaveTextContent('Admin');
+    // Check first user card
+    const johnCard = screen.getByText('John Doe').closest('div');
+    expect(johnCard).toHaveTextContent('john@example.com');
+    expect(johnCard).toHaveTextContent('Admin');
     
-  //   // Check second user card
-  //   const janeCard = screen.getByText('Jane Smith').closest('div');
-  //   expect(janeCard).toHaveTextContent('jane@example.com');
-  //   expect(janeCard).toHaveTextContent('User');
-  // });
+    // Check second user card
+    const janeCard = screen.getByText('Jane Smith').closest('div');
+    expect(janeCard).toHaveTextContent('jane@example.com');
+    expect(janeCard).toHaveTextContent('User');
+  });
 
   test('navigation buttons are clickable', () => {
     render(<Home />);
@@ -74,34 +74,34 @@ describe('Home Component', () => {
     expect(aboutButton).toBeEnabled();
   });
 
-  // test('navigation functions are called when buttons are clicked', () => {
-  //   render(<Home />);
+  test('navigation functions are called when buttons are clicked', () => {
+    render(<Home />);
     
-  //   const productsButton = screen.getByText('Go to Products');
-  //   const aboutButton = screen.getByText('Go to About');
-    
-  //   fireEvent.click(productsButton);
-  //   fireEvent.click(aboutButton);
-    
-  //   // The mock navigate function should be called
-  //   // We can't test the actual navigation in this mock setup
-  //   expect(productsButton).toBeInTheDocument();
-  //   expect(aboutButton).toBeInTheDocument();
-  // });
+    const productsButton = screen.getByText('Go to Products');
+    const aboutButton = screen.getByText('Go to About');
 
-  // xtest('component structure is correct', () => {
-  //   render(<Home />);
+    fireEvent.click(productsButton);
+    fireEvent.click(aboutButton);
+
+    // Since there's no direct way to test navigate calls,
+    // checking buttons remain in document after clicks.
+    expect(productsButton).toBeInTheDocument();
+    expect(aboutButton).toBeInTheDocument();
+  });
+
+  test('component structure is correct', () => {
+    render(<Home />);
     
-  //   // Check main container
-  //   const mainContainer = screen.getByText('Welcome to Our Application').closest('div');
-  //   expect(mainContainer).toHaveClass('home-container');
+    // Check main container
+    const mainContainer = screen.getByText('Welcome to Our Application').closest('div');
+    expect(mainContainer).toHaveClass('home-container');
     
-  //   // Check navigation buttons container
-  //   const navContainer = screen.getByText('Go to Products').closest('div');
-  //   expect(navContainer).toHaveClass('navigation-buttons');
+    // Check navigation buttons container
+    const navButtons = screen.getByText('Go to Products').closest('div');
+    expect(navButtons).toHaveClass('navigation-buttons');
     
-  //   // Check users section
-  //   const usersSection = screen.getByText('Users List').closest('div');
-  //   expect(usersSection).toHaveClass('users-section');
-  // });
-}); 
+    // Check users section
+    const usersSection = screen.getByText('Users List').closest('div');
+    expect(usersSection).toHaveClass('users-section');
+  });
+});
