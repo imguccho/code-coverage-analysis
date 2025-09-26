@@ -17,23 +17,27 @@ const CartSummary: React.FC = () => {
 
   // Remove all of a product from cart
   const removeProduct = (id: number) => {
-    const newCart = cart.filter((item) => item.id !== id);
     clearCart();
+    const newCart = cart.filter((item) => item.id !== id);
     newCart.forEach((item) => addToCart(item));
   };
 
   // Decrement quantity
   const decrement = (id: number) => {
-    let removed = false;
-    const newCart = cart.filter((item) => {
-      if (!removed && item.id === id) {
-        removed = true;
-        return false;
-      }
-      return true;
-    });
-    clearCart();
-    newCart.forEach((item) => addToCart(item));
+    try {
+      let removed = false;
+      const newCart = cart.filter((item) => {
+        if (!removed && item.id === id) {
+          removed = true;
+          return false;
+        }
+        return true;
+      });
+      clearCart();
+      newCart.forEach((item) => addToCart(item));
+    } catch (error) {
+      console.error('Error decrementing item:', error);
+    }
   };
 
   // Increment quantity
