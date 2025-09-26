@@ -54,7 +54,6 @@ describe('About Component', () => {
   test('renders all team members with correct data', () => {
     render(<About />);
     
-    // Check if all team members are rendered
     expect(screen.getByText('Sarah Wilson')).toBeInTheDocument();
     expect(screen.getByText('Mike Chen')).toBeInTheDocument();
     expect(screen.getByText('Emily Davis')).toBeInTheDocument();
