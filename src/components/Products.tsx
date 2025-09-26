@@ -43,12 +43,8 @@ const Products: React.FC = () => {
       <p>Browse our collection of products.</p>
 
       <div className="navigation-buttons">
-        <button onClick={handleNavigateToHome} className="nav-button">
-          Go to Home
-        </button>
-        <button onClick={handleNavigateToAbout} className="nav-button">
-          Go to About
-        </button>
+        <button onClick={handleNavigateToHome} className="nav-button">Go to Home</button>
+        <button onClick={handleNavigateToAbout} className="nav-button">Go to About</button>
       </div>
 
       <div className="category-filter">
