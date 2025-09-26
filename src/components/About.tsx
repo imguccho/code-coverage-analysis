@@ -2,18 +2,18 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface TeamMember {
-  id: number; // Unique identifier for the team member
-  name: string; // Name of the team member
-  position: string; // Position held in the company
-  department: string; // Department of the team member
-  experience: number; // Years of experience
+  id: number;
+  name: string;
+  position: string;
+  department: string;
+  experience: number;
 }
 
 interface CompanyStat {
-  id: number; // Unique identifier for the company statistic
-  label: string; // Label for the statistic
-  value: string; // Value of the statistic
-  description: string; // Description of the statistic
+  id: number;
+  label: string;
+  value: string;
+  description: string;
 }
 
 const About: React.FC = () => {
@@ -45,7 +45,11 @@ const About: React.FC = () => {
     navigate('/products');
   };
 
-  const getExperienceLevel = (years: number): string => years >= 10 ? 'Senior' : years >= 5 ? 'Mid-level' : 'Junior';
+  const getExperienceLevel = (years: number): string => {
+    if (years >= 10) return 'Senior';
+    if (years >= 5) return 'Mid-level';
+    return 'Junior';
+  };
 
   return (
     <div className="about-container">
@@ -70,7 +74,7 @@ const About: React.FC = () => {
               <p className="stat-label">{stat.label}</p>
               <p className="stat-description">{stat.description}</p>
             </div>
-          ))} 
+          ))}
         </div>
       </div>
 
@@ -86,20 +90,18 @@ const About: React.FC = () => {
                 Experience: {member.experience} years ({getExperienceLevel(member.experience)})
               </p>
             </div>
-          ))} 
+          ))}
         </div>
       </div>
 
       <div className="company-description">
         <h2>Our Mission</h2>
         <p>
-          We are dedicated to creating innovative solutions that help businesses grow and succeed. 
-          Our team of experienced professionals works tirelessly to deliver high-quality products 
-          and services that exceed our clients' expectations.
+          We are dedicated to creating innovative solutions that help businesses grow and succeed. Our team of experienced professionals works tirelessly to deliver high-quality products and services that exceed our clients' expectations.
         </p>
       </div>
     </div>
   );
 };
 
-export default About;
+export default About;  
