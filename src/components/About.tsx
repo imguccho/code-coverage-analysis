@@ -97,13 +97,11 @@ const About: React.FC = () => {
       <div className="company-description">
         <h2>Our Mission</h2>
         <p>
-          We are dedicated to creating innovative solutions that help businesses grow and succeed. Our
-          team of experienced professionals works tirelessly to deliver high-quality products and services
-          that exceed our clients&apos; expectations.
+          We are dedicated to creating innovative solutions that help businesses grow and succeed. Our team of experienced professionals works tirelessly to deliver high-quality products and services that exceed our clients' expectations.
         </p>
       </div>
     </div>
   );
 };
 
-export default About;  
+export default About;
