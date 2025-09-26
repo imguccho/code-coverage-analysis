@@ -31,10 +31,10 @@ const About: React.FC = () => {
 
   // Dummy data for company statistics
   const companyStats: CompanyStat[] = [
-    { id: 1, label: 'Years in Business', value: '10+', description: 'Over a decade of experience' },
-    { id: 2, label: 'Team Members', value: '50+', description: 'Dedicated professionals' },
-    { id: 3, label: 'Projects Completed', value: '200+', description: 'Successful deliveries' },
-    { id: 4, label: 'Client Satisfaction', value: '98%', description: 'Happy customers' },
+    { id: 1, label: 'Years in Business', value: '10+', description: "Over a decade of experience" },
+    { id: 2, label: 'Team Members', value: '50+', description: "Dedicated professionals" },
+    { id: 3, label: 'Projects Completed', value: '200+', description: "Successful deliveries" },
+    { id: 4, label: 'Client Satisfaction', value: '98%', description: "Happy customers" },
   ];
 
   const handleNavigateToHome = () => {
@@ -97,8 +97,8 @@ const About: React.FC = () => {
       <div className="company-description">
         <h2>Our Mission</h2>
         <p>
-          We are dedicated to creating innovative solutions that help businesses grow and succeed. 
-          Our team of experienced professionals works tirelessly to deliver high-quality products 
+          We are dedicated to creating innovative solutions that help businesses grow and succeed. {' '}
+          Our team of experienced professionals works tirelessly to deliver high-quality products {' '}
           and services that exceed our clients' expectations.
         </p>
       </div>
@@ -106,4 +106,4 @@ const About: React.FC = () => {
   );
 };
 
-export default About; 
+export default About;
