@@ -56,7 +56,7 @@ const FAQ: React.FC = () => {
             }}
           >
             <h3 style={{ margin: 0 }}>{item.question}</h3>
-            <span>{openIndex === index ? '−' : '+'}</span>
+            <span>{openIndex === index ? '✓' : '+'}</span>
           </div>
           {openIndex === index && (
             <div style={{ padding: '1rem', backgroundColor: '#fff' }}>
