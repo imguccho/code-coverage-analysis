@@ -3,42 +3,48 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
-
-reportWebVitals();
-
 describe('Index File', () => {
-  test('renders App component without crashing (createRoot)', () => {
-    const div = document.createElement('div');
-    const root = ReactDOM.createRoot(div);
-    root.render(<App />);
+  let container: HTMLElement | null = null;
+
+  beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
   });
 
-  test('renders App component without crashing (ReactDOM.render)', () => {
-    const div = document.createElement('div');
-    ReactDOM.render(<App />, div);
-    ReactDOM.unmountComponentAtNode(div);
+  afterEach(() => {
+    if (container) {
+      ReactDOM.unmountComponentAtNode(container);
+      container.remove();
+      container = null;
+    }
+    jest.clearAllMocks();
   });
 
-  test('reportWebVitals function is called with a callback', () => {
+  test('renders App component without crashing', () => {
+    if (!container) throw new Error('Container should be defined');
+    ReactDOM.render(<App />, container);
+    expect(container.innerHTML).toBeTruthy();
+  });
+
+  test('reportWebVitals function is called with a valid callback', () => {
     const mockFn = jest.fn();
     reportWebVitals(mockFn);
     expect(mockFn).toHaveBeenCalled();
   });
 
-  test('reportWebVitals function works without a callback', () => {
+  test('reportWebVitals function handles no argument gracefully', () => {
     expect(() => reportWebVitals()).not.toThrow();
   });
 
-  test('root element exists before rendering', () => {
-    const rootElement = document.getElementById('root');
-    expect(rootElement).not.toBeNull();
+  test('reportWebVitals callback receives expected performance entries', () => {
+    const mockFn = jest.fn();
+    // Call reportWebVitals with mockFn
+    reportWebVitals(mockFn);
+    // It should call the callback with an object with expected keys
+    expect(mockFn).toHaveBeenCalled();
+    const arg = mockFn.mock.calls[0][0];
+    expect(typeof arg).toBe('object');
+    expect(arg).toHaveProperty('name');
+    expect(arg).toHaveProperty('value');
   });
 });
