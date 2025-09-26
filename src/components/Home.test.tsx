@@ -76,17 +76,17 @@ describe('Home Component', () => {
 
   test('component structure is correct', () => {
     render(<Home />);
-    
-    // Check main container
+
     const mainContainer = screen.getByText('Welcome to Our Application').closest('div');
+    expect(mainContainer).toBeInTheDocument();
     expect(mainContainer).toHaveClass('home-container');
-    
-    // Check navigation buttons container
+
     const navContainer = screen.getByText('Go to Products').closest('div');
+    expect(navContainer).toBeInTheDocument();
     expect(navContainer).toHaveClass('navigation-buttons');
-    
-    // Check users section
+
     const usersSection = screen.getByText('Users List').closest('div');
+    expect(usersSection).toBeInTheDocument();
     expect(usersSection).toHaveClass('users-section');
   });
 });

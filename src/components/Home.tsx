@@ -21,11 +21,11 @@ const Home: React.FC = () => {
 
   const handleNavigateToProducts = () => {
     navigate('/products');
-  }
+  };
 
   const handleNavigateToAbout = () => {
     navigate('/about');
-  }
+  };
 
   return (
     <div className="home-container">
@@ -57,4 +57,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;  
+export default Home;
