@@ -21,17 +21,17 @@ const Home: React.FC = () => {
 
   const handleNavigateToProducts = () => {
     navigate('/products');
-  };
+  }
 
   const handleNavigateToAbout = () => {
     navigate('/about');
-  };
+  }
 
   return (
     <div className="home-container">
       <h1>Welcome to Our Application</h1>
       <p>This is the home page with some dummy user data.</p>
-      
+
       <div className="navigation-buttons">
         <button onClick={handleNavigateToProducts} className="nav-button">
           Go to Products
@@ -57,4 +57,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home; 
+export default Home;  
