@@ -33,7 +33,7 @@ const About: React.FC = () => {
   const companyStats: CompanyStat[] = [
     { id: 1, label: 'Years in Business', value: '10+', description: 'Over a decade of experience' },
     { id: 2, label: 'Team Members', value: '50+', description: 'Dedicated professionals' },
-    { id: 3, label: 'Projects Completed', value: '200+', description: 'Successful deliveries' },
+    { id: 3, label: 'Projects Completed', value: '200+', description: 'Successful deliveries ' },
     { id: 4, label: 'Client Satisfaction', value: '98%', description: 'Happy customers' },
   ];
 
@@ -55,7 +55,7 @@ const About: React.FC = () => {
     <div className="about-container">
       <h1>About Our Company</h1>
       <p>Learn more about our team and company statistics.</p>
-      
+
       <div className="navigation-buttons">
         <button onClick={handleNavigateToHome} className="nav-button">
           Go to Home
@@ -87,7 +87,7 @@ const About: React.FC = () => {
               <p className="position">{member.position}</p>
               <p className="department">{member.department}</p>
               <p className="experience">
-                Experience: {member.experience} years ({getExperienceLevel(member.experience)})
+                Experience: {getExperienceLevel(member.experience)} years
               </p>
             </div>
           ))}
@@ -106,4 +106,4 @@ const About: React.FC = () => {
   );
 };
 
-export default About; 
+export default About;  
