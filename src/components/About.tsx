@@ -55,7 +55,7 @@ const About: React.FC = () => {
     <div className="about-container">
       <h1>About Our Company</h1>
       <p>Learn more about our team and company statistics.</p>
-      
+
       <div className="navigation-buttons">
         <button onClick={handleNavigateToHome} className="nav-button">
           Go to Home
@@ -87,7 +87,7 @@ const About: React.FC = () => {
               <p className="position">{member.position}</p>
               <p className="department">{member.department}</p>
               <p className="experience">
-                Experience: {member.experience} years ({getExperienceLevel(member.experience)})
+                Experience: {member.experience} year{member.experience > 1 ? 's' : ''} ({getExperienceLevel(member.experience)})
               </p>
             </div>
           ))}
@@ -106,4 +106,4 @@ const About: React.FC = () => {
   );
 };
 
-export default About; 
+export default About;  
