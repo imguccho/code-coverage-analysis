@@ -26,7 +26,11 @@ const Products: React.FC = () => {
   ];
 
   const handleNavigateToHome = () => {
-    navigate('/');
+    try {
+        navigate('/');
+    } catch (error) {
+        console.error('Navigation error:', error);
+    }
   };
 
   const handleNavigateToAbout = () => {
@@ -39,7 +43,10 @@ const Products: React.FC = () => {
 
   const filteredProducts = selectedCategory === 'all' 
     ? products 
-    : products.filter(product => product.category === selectedCategory);
+    : products.reduce((acc, product) => { 
+        if (product.category === selectedCategory) acc.push(product); 
+        return acc; 
+    }, []);
 
   const categories = ['all', ...Array.from(new Set(products.map(p => p.category)))];
 
@@ -68,7 +75,7 @@ const Products: React.FC = () => {
             >
               {category.charAt(0).toUpperCase() + category.slice(1)}
             </button>
-          ))}
+          ))} 
         </div>
       </div>
 
@@ -80,10 +87,10 @@ const Products: React.FC = () => {
             <p>Category: {product.category}</p>
             <p>Status: {product.inStock ? 'In Stock' : 'Out of Stock'}</p>
           </div>
-        ))}
+        ))} 
       </div>
     </div>
   );
 };
 
-export default Products; 
+export default Products;
