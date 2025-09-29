@@ -37,11 +37,11 @@ const Products: React.FC = () => {
     setSelectedCategory(category);
   };
 
-  const filteredProducts = selectedCategory === 'all' 
+  const filteredProducts = React.useMemo(() => selectedCategory === 'all' 
     ? products 
-    : products.filter(product => product.category === selectedCategory);
+    : products.filter(product => product.category === selectedCategory), [selectedCategory, products]);
 
-  const categories = ['all', ...Array.from(new Set(products.map(p => p.category)))];
+  const categories = React.useMemo(() => ['all', ...Array.from(new Set(products.map(p => p.category)))], [products]);
 
   return (
     <div className="products-container">
@@ -64,11 +64,10 @@ const Products: React.FC = () => {
             <button
               key={category}
               onClick={() => handleCategoryChange(category)}
-              className={`category-button ${selectedCategory === category ? 'active' : ''}`}
-            >
+              className={`category-button ${selectedCategory === category ? 'active' : ''}`}>
               {category.charAt(0).toUpperCase() + category.slice(1)}
             </button>
-          ))}
+          ))} 
         </div>
       </div>
 
@@ -80,10 +79,10 @@ const Products: React.FC = () => {
             <p>Category: {product.category}</p>
             <p>Status: {product.inStock ? 'In Stock' : 'Out of Stock'}</p>
           </div>
-        ))}
+        ))} 
       </div>
     </div>
   );
 };
 
-export default Products; 
+export default Products;
