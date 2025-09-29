@@ -37,9 +37,12 @@ const Products: React.FC = () => {
     setSelectedCategory(category);
   };
 
-  const filteredProducts = React.useMemo(() => selectedCategory === 'all' 
-    ? products 
-    : products.filter(product => product.category === selectedCategory), [selectedCategory, products]);
+  const filteredProducts = React.useMemo(() =>
+    selectedCategory === 'all'
+      ? products
+      : products.filter(product => product.category === selectedCategory),
+    [selectedCategory, products]
+  );
 
   const categories = React.useMemo(() => ['all', ...Array.from(new Set(products.map(p => p.category)))], [products]);
 
@@ -49,12 +52,8 @@ const Products: React.FC = () => {
       <p>Browse our collection of products with dummy data.</p>
       
       <div className="navigation-buttons">
-        <button onClick={handleNavigateToHome} className="nav-button">
-          Go to Home
-        </button>
-        <button onClick={handleNavigateToAbout} className="nav-button">
-          Go to About
-        </button>
+        <button onClick={handleNavigateToHome} className="nav-button">Go to Home</button>
+        <button onClick={handleNavigateToAbout} className="nav-button">Go to About</button>
       </div>
 
       <div className="category-filter">
@@ -64,22 +63,26 @@ const Products: React.FC = () => {
             <button
               key={category}
               onClick={() => handleCategoryChange(category)}
-              className={`category-button ${selectedCategory === category ? 'active' : ''}`}>
+              className={`category-button ${selectedCategory === category ? 'active' : ''}`}
+            >
               {category.charAt(0).toUpperCase() + category.slice(1)}
             </button>
-          ))} 
+          ))}
         </div>
       </div>
 
       <div className="products-grid">
         {filteredProducts.map((product) => (
-          <div key={product.id} className={`product-card ${!product.inStock ? 'out-of-stock' : ''}`}>
+          <div
+            key={product.id}
+            className={`product-card ${!product.inStock ? 'out-of-stock' : ''}`}
+          >
             <h3>{product.name}</h3>
             <p>Price: ${product.price}</p>
             <p>Category: {product.category}</p>
             <p>Status: {product.inStock ? 'In Stock' : 'Out of Stock'}</p>
           </div>
-        ))} 
+        ))}
       </div>
     </div>
   );
