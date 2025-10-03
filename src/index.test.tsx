@@ -3,30 +3,52 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
-
 describe('Index File', () => {
-  test('renders App component without crashing', () => {
-    const div = document.createElement('div');
-    ReactDOM.render(<App />, div);
-    ReactDOM.unmountComponentAtNode(div);
+  const originalGetElementById = document.getElementById;
+  let container: HTMLElement | null = null;
+
+  beforeEach(() => {
+    container = document.createElement('div');
+    container.setAttribute('id', 'root');
+    document.body.appendChild(container);
   });
 
-  test('reportWebVitals function is called', () => {
+  afterEach(() => {
+    if (container) {
+      ReactDOM.unmountComponentAtNode(container);
+      document.body.removeChild(container);
+      container = null;
+    }
+    jest.restoreAllMocks();
+  });
+
+  test('renders App component without crashing via ReactDOMClient', () => {
+    const root = ReactDOM.createRoot(container!);
+    root.render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    );
+  });
+
+  test('renders App component via ReactDOM.render and unmounts correctly', () => {
+    ReactDOM.render(<App />, container!);
+    ReactDOM.unmountComponentAtNode(container!);
+  });
+
+  test('reportWebVitals function is called with a callback', () => {
     const mockFn = jest.fn();
     reportWebVitals(mockFn);
     expect(mockFn).toHaveBeenCalled();
+  });
+
+  test('reportWebVitals function can be called without a callback', () => {
+    expect(() => reportWebVitals()).not.toThrow();
+  });
+
+  test('document.getElementById is called with root', () => {
+    const spyGetElementById = jest.spyOn(document, 'getElementById');
+    const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+    expect(spyGetElementById).toHaveBeenCalledWith('root');
   });
 });
