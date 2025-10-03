@@ -1,45 +1,46 @@
 import reportWebVitals from './reportWebVitals';
 
+const mockGetCLS = jest.fn();
+const mockGetFID = jest.fn();
+const mockGetFCP = jest.fn();
+const mockGetLCP = jest.fn();
+const mockGetTTFB = jest.fn();
+
+jest.mock('web-vitals', () => ({
+  getCLS: (callback) => mockGetCLS(callback),
+  getFID: (callback) => mockGetFID(callback),
+  getFCP: (callback) => mockGetFCP(callback),
+  getLCP: (callback) => mockGetLCP(callback),
+  getTTFB: (callback) => mockGetTTFB(callback),
+}));
+
 describe('reportWebVitals', () => {
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
   });
 
-  it('does not throw when called without argument', () => {
-    expect(() => {
-      reportWebVitals();
-    }).not.toThrow();
+  it('does not call any web vitals methods if onPerfEntry is not provided', () => {
+    reportWebVitals(undefined);
+    expect(mockGetCLS).not.toHaveBeenCalled();
+    expect(mockGetFID).not.toHaveBeenCalled();
+    expect(mockGetFCP).not.toHaveBeenCalled();
+    expect(mockGetLCP).not.toHaveBeenCalled();
+    expect(mockGetTTFB).not.toHaveBeenCalled();
   });
 
-  it('calls web-vitals methods when passed a function', () => {
-    const onPerfEntry = jest.fn();
-    const getCLS = jest.fn((callback) => callback({ name: 'CLS', value: 1 }));
-    const getFID = jest.fn((callback) => callback({ name: 'FID', value: 2 }));
-    const getFCP = jest.fn((callback) => callback({ name: 'FCP', value: 3 }));
-    const getLCP = jest.fn((callback) => callback({ name: 'LCP', value: 4 }));
-    const getTTFB = jest.fn((callback) => callback({ name: 'TTFB', value: 5 }));
+  it('calls all web vitals methods with onPerfEntry callback if provided', () => {
+    const mockCallback = jest.fn();
+    reportWebVitals(mockCallback);
 
-    jest.mock('web-vitals', () => ({
-      getCLS,
-      getFID,
-      getFCP,
-      getLCP,
-      getTTFB
-    }));
+    expect(mockGetCLS).toHaveBeenCalledTimes(1);
+    expect(mockGetFID).toHaveBeenCalledTimes(1);
+    expect(mockGetFCP).toHaveBeenCalledTimes(1);
+    expect(mockGetLCP).toHaveBeenCalledTimes(1);
+    expect(mockGetTTFB).toHaveBeenCalledTimes(1);
 
-    const originalWebVitals = jest.requireActual('web-vitals');
-
-    // Overwrite global import (simulate)
-    jest.doMock('web-vitals', () => originalWebVitals);
-
-    // To test, we call our function with a spy
-    reportWebVitals(onPerfEntry);
-
-    expect(onPerfEntry).toHaveBeenCalledTimes(5);
-    expect(onPerfEntry).toHaveBeenCalledWith({ name: 'CLS', value: 1 });
-    expect(onPerfEntry).toHaveBeenCalledWith({ name: 'FID', value: 2 });
-    expect(onPerfEntry).toHaveBeenCalledWith({ name: 'FCP', value: 3 });
-    expect(onPerfEntry).toHaveBeenCalledWith({ name: 'LCP', value: 4 });
-    expect(onPerfEntry).toHaveBeenCalledWith({ name: 'TTFB', value: 5 });
+    // Simulate the web-vitals lib invoking the callback
+    const metric = { name: 'CLS', value: 0.1 };
+    mockGetCLS.mock.calls[0][0](metric);
+    expect(mockCallback).toHaveBeenCalledWith(metric);
   });
 });
