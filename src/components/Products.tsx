@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface Product {
@@ -33,13 +33,13 @@ const Products: React.FC = () => {
     navigate('/about');
   };
 
-  const handleCategoryChange = (category: string) => {
+  const handleCategoryChange = (category: string): void => {
     setSelectedCategory(category);
   };
 
-  const filteredProducts = selectedCategory === 'all' 
+  const filteredProducts = useMemo(() => selectedCategory === 'all' 
     ? products 
-    : products.filter(product => product.category === selectedCategory);
+    : products.filter(product => product.category === selectedCategory), [selectedCategory, products]);
 
   const categories = ['all', ...Array.from(new Set(products.map(p => p.category)))];
 
@@ -86,4 +86,4 @@ const Products: React.FC = () => {
   );
 };
 
-export default Products; 
+export default Products;
