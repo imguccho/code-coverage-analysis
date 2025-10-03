@@ -37,11 +37,11 @@ const Products: React.FC = () => {
     setSelectedCategory(category);
   };
 
-  const filteredProducts = selectedCategory === 'all' 
+  const filteredProducts = React.useMemo(() => selectedCategory === 'all' 
     ? products 
-    : products.filter(product => product.category === selectedCategory);
+    : products.filter(product => product.category === selectedCategory), [selectedCategory, products]);
 
-  const categories = ['all', ...Array.from(new Set(products.map(p => p.category)))];
+  const categories = React.useMemo(() => ['all', ...Array.from(new Set(products.map(p => p.category)))], [products]);
 
   return (
     <div className="products-container">
@@ -86,4 +86,4 @@ const Products: React.FC = () => {
   );
 };
 
-export default Products; 
+export default Products;
