@@ -1,12 +1,12 @@
 import React from 'react';
 
-export const BrowserRouter = ({ children }: { children: React.ReactNode }) => 
-  React.createElement('div', {}, children);
+export const BrowserRouter = ({ children }: { children: React.ReactNode }) => (
+  <div>{children}</div>);
 
-export const Routes = ({ children }: { children: React.ReactNode }) => 
-  React.createElement('div', {}, children);
+export const Routes = ({ children }: { children: React.ReactNode }) => (
+  <div>{children}</div>);
 
-export const Route = ({ element }: { element: React.ReactNode }) => 
-  React.createElement('div', {}, element);
+export const Route: React.FC<{ element: React.ReactNode }> = ({ element }) => (
+  <div>{element}</div>);
 
-export const useNavigate = () => jest.fn(); 
+export const useNavigate = () => jest.fn();
