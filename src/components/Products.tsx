@@ -1,3 +1,7 @@
+Fix syntax errors in the following code.
+Return ONLY the full corrected code.
+No markdown. No explanations.
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
