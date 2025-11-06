@@ -10,7 +10,7 @@ interface Product {
 }
 
 const Products: React.FC = () => {
-  const navigate = useNavigate(;
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   // Dummy data for products
@@ -86,4 +86,4 @@ const Products: React.FC = () => {
   );
 };
 
-export default Products; 
+export default Products;
