@@ -17,11 +17,11 @@ interface CompanyStat {
 }
 
 const About: React.FC = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate;
 
   // Dummy data for team members
   const teamMembers: TeamMember[] = [
-    { id: 1, name: 'Sarah Wilson', position: 'CEO', department: 'Executive', experience: 15 },
+    { id: 1, name: 'Sarah Wilson', position: 'CEO', department: 'Executive', experience: 15 }
     { id: 2, name: 'Mike Chen', position: 'CTO', department: 'Technology', experience: 12 },
     { id: 3, name: 'Emily Davis', position: 'Design Lead', department: 'Design', experience: 8 },
     { id: 4, name: 'David Rodriguez', position: 'Senior Developer', department: 'Engineering', experience: 10 },
