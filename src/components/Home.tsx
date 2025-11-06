@@ -1,3 +1,5 @@
+Fix any syntax errors, logical errors, or build issues in this code file 'src/components/Home.tsx':
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -58,3 +60,5 @@ const Home: React.FC = () => {
 };
 
 export default Home; 
+
+Return only the complete corrected code.
