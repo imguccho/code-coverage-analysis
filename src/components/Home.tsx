@@ -1,5 +1,7 @@
 Fix any syntax errors, logical errors, or build issues in this code file 'src/components/Home.tsx':
 
+Fix any syntax errors, logical errors, or build issues in this code file 'src/components/Home.tsx':
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
