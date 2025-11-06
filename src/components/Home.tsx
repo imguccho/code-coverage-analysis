@@ -9,7 +9,7 @@ interface User {
 }
 
 const Home: React.FC = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate;
 
   // Dummy data for users
   const users: User[] = [
