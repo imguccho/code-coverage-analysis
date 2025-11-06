@@ -1,3 +1,5 @@
+Fix this file:
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -106,4 +108,4 @@ const About: React.FC = () => {
   );
 };
 
-export default About; 
+export default About;
