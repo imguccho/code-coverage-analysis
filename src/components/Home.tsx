@@ -1,3 +1,12 @@
+You are a code fixer.
+
+- Fix syntax errors ONLY.
+- Return ONLY the corrected file content.
+- No comments.
+- No markdown.
+- No explanations.
+
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -57,4 +66,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home; 
+export default Home;
