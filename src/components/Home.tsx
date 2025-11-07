@@ -1,3 +1,8 @@
+The following code file 'src/components/Home.tsx' is part of a pull request that has build failures.
+Please analyze the code and fix any syntax errors, logical errors, or issues that could cause build failures.
+Return only the complete corrected code without any explanations or markdown formatting.
+
+Code:
 You are a code fixer.
 
 - Fix syntax errors ONLY.
