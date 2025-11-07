@@ -1,3 +1,12 @@
+You are an expert code repair assistant.
+
+Your task: analyze and fix the following code file 'src/components/Home.tsx' that has build or syntax issues.
+Rules:
+- Correct syntax or logical errors.
+- Do not skip corrections even if the code seems fine — always ensure it would compile successfully.
+- Return only the full corrected code, with no explanations, no markdown, no prefix, and no suffix.
+
+### CODE START ###
 The following code file 'src/components/Home.tsx' is part of a pull request that has build failures.
 Please analyze the code and fix any syntax errors, logical errors, or issues that could cause build failures.
 Return only the complete corrected code without any explanations or markdown formatting.
