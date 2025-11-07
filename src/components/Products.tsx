@@ -1,7 +1,3 @@
-Fix syntax errors in the following code.
-Return ONLY the full corrected code.
-No markdown. No explanations.
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -51,14 +47,10 @@ const Products: React.FC = () => {
     <div className="products-container">
       <h1>Products Page</h1>
       <p>Browse our collection of products with dummy data.</p>
-      
+
       <div className="navigation-buttons">
-        <button onClick={handleNavigateToHome} className="nav-button">
-          Go to Home
-        </button>
-        <button onClick={handleNavigateToAbout} className="nav-button">
-          Go to About
-        </button>
+        <button onClick={handleNavigateToHome} className="nav-button">Go to Home</button>
+        <button onClick={handleNavigateToAbout} className="nav-button">Go to About</button>
       </div>
 
       <div className="category-filter">
@@ -78,7 +70,7 @@ const Products: React.FC = () => {
 
       <div className="products-grid">
         {filteredProducts.map((product) => (
-          <div key={product.id} className={`product-card ${!product.inStock ? 'out-of-stock' : ''}`}>
+          <div key={product.id} className={`product-card ${!product.inStock ? 'out-of-stock' : ''}` }>
             <h3>{product.name}</h3>
             <p>Price: ${product.price}</p>
             <p>Category: {product.category}</p>
@@ -90,4 +82,4 @@ const Products: React.FC = () => {
   );
 };
 
-export default Products;
+export default Products;  
