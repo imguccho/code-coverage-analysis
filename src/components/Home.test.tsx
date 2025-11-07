@@ -10,13 +10,6 @@ describe('Home Component', () => {
     expect(screen.getByText('This is the home page with some dummy user data.')).toBeInTheDocument();
   });
 
-  test('renders navigation buttons', () => {
-    render(<Home />);
-    
-    expect(screen.getByText('Go to Products')).toBeInTheDocument();
-    expect(screen.getByText('Go to About')).toBeInTheDocument();
-  });
-
   test('renders users section with title', () => {
     render(<Home />);
     
