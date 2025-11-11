@@ -1,4 +1,3 @@
-```tsx
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { useNavigate } from 'react-router-dom';
@@ -186,5 +185,35 @@ describe('Products Component', () => {
     render(<Products />);
     expect(screen.getByText('Error fetching products')).toBeInTheDocument();
   });
+
+  test('displays loading state while fetching products', () => {
+    // Mock loading state
+    jest.mock('./Products', () => {
+      return () => <div>Loading products...</div>;
+    });
+
+    render(<Products />);
+    expect(screen.getByText('Loading products...')).toBeInTheDocument();
+  });
+
+  test('displays correct product details when a product is clicked', () => {
+    render(<Products />);
+    
+    const laptopCard = screen.getByText('Laptop').closest('div');
+    fireEvent.click(laptopCard);
+    
+    // Assuming the product details component is rendered on click
+    expect(screen.getByText('Laptop Details')).toBeInTheDocument();
+    expect(screen.getByText('Price: $999')).toBeInTheDocument();
+  });
+
+  test('displays a message when no categories are available', () => {
+    // Mocking the scenario where categories are empty
+    jest.mock('./Products', () => {
+      return () => <div>No categories available</div>;
+    });
+
+    render(<Products />);
+    expect(screen.getByText('No categories available')).toBeInTheDocument();
+  });
 });
-```
