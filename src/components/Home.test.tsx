@@ -17,6 +17,12 @@ describe('Home Component', () => {
     expect(screen.getByText('Go to About')).toBeInTheDocument();
   });
 
+  test('renders users section with title', () => {
+    render(<Home />);
+    
+    expect(screen.getByText('Users List')).toBeInTheDocument();
+  });
+
   test('navigation buttons are clickable', () => {
     render(<Home />);
     
@@ -27,4 +33,4 @@ describe('Home Component', () => {
     expect(aboutButton).toBeEnabled();
   });
 
-});
+}); 
