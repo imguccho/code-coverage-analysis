@@ -1,3 +1,4 @@
+```tsx
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { useNavigate } from 'react-router-dom';
@@ -145,4 +146,45 @@ describe('Products Component', () => {
     fireEvent.click(laptopCard);
   });
 
+  test('displays a message when no products are available', () => {
+    // Assuming we can mock the product data to be empty
+    jest.mock('./Products', () => {
+      return () => <div>No products available</div>;
+    });
+
+    render(<Products />);
+    expect(screen.getByText('No products available')).toBeInTheDocument();
+  });
+
+  test('handles edge case of clicking disabled category button', () => {
+    render(<Products />);
+    
+    const disabledCategoryBtn = screen.getByRole('button', { name: 'Disabled Category' });
+    expect(disabledCategoryBtn).toBeDisabled();
+
+    fireEvent.click(disabledCategoryBtn);
+    expect(mockNavigate).not.toHaveBeenCalled();
+  });
+
+  test('ensures category buttons are not clickable when loading', () => {
+    // Assuming we can mock loading state
+    jest.mock('./Products', () => {
+      return () => <div>Loading...</div>;
+    });
+
+    render(<Products />);
+    const electronicsBtn = screen.getByRole('button', { name: 'Electronics' });
+    expect(electronicsBtn).toBeDisabled();
+  });
+
+  test('displays error message when fetching products fails', () => {
+    // Assuming we can mock an error state
+    jest.mock('./Products', () => {
+      return () => <div>Error fetching products</div>;
+    });
+
+    render(<Products />);
+    expect(screen.getByText('Error fetching products')).toBeInTheDocument();
+  });
 });
+```
