@@ -29,7 +29,7 @@ const Home: React.FC = () => {
 
   return (
     <div className="home-container">
-      <h1>Welcome to Our Application</h1>
+      <h1>Welcome to Our Application Home</h1>
       <p>This is the home page with some dummy user data.</p>
       
       <div className="navigation-buttons">
