@@ -30,7 +30,7 @@ const Home: React.FC = () => {
   return (
     <div className="home-container">
       <h1>Welcome to Our Application</h1>
-      <p>This is the home page with some dummy user data.</p>
+      <p>This is the home page with some dummy data.</p>
       
       <div className="navigation-buttons">
         <button onClick={handleNavigateToProducts} className="nav-button">
