@@ -1,0 +1,91 @@
+{
+  "rules": [
+    {
+      "name": "improve-test-coverage",
+      "description": "Scan all test files in the repo and automatically rewrite them to maximize test coverage using mocks, additional branches, missing assertions, and edge cases.",
+      "trigger": "improve-test-coverage",
+      "actions": [
+        {
+          "action": "shell",
+          "run": "git ls-files | grep -E '\\.(test|spec)\\.(ts|js)$' || true",
+          "output_to": "test_files"
+        },
+        {
+          "action": "agent",
+          "task": "For each test file listed below, improve test coverage by:\n- Adding missing edge cases\n- Adding negative test paths\n- Adding mock implementations\n- Adding assertions for uncovered branches\n- Increasing expect() statements\n- Ensuring async tests are covered\n- Adding tests for error scenarios\n\nRewrite the entire test file with improved coverage.\n\nTest files:\n{{test_files}}",
+          "output_to": "updated_tests"
+        },
+        {
+          "action": "apply_patch",
+          "patch": "{{updated_tests}}"
+        }
+      ]
+    },
+
+    {
+      "name": "coverage-report",
+      "description": "Runs Jest command in terminal and prints a summary.",
+      "trigger": "coverage-report"
+    },
+
+    {
+      "name": "improve-and-raise-coverage",
+      "description": "Runs test coverage, identifies uncovered areas, rewrites test files to improve test coverage, and repeats until >= 90%.",
+      "trigger": "improve-and-raise-coverage",
+      "actions": [
+        {
+          "action": "shell",
+          "run": "npm test -- --coverage --coverageReporters=text-summary > coverage.txt || yarn test --coverage --coverageReporters=text-summary > coverage.txt"
+        },
+        {
+          "action": "shell",
+          "run": "grep -oP 'All files.*?\\K\\d+(?=%)' coverage.txt",
+          "output_to": "coverage_percent"
+        },
+        {
+          "action": "agent",
+          "task": "Current test coverage: {{coverage_percent}}%.\n\nIf coverage < 90, then:\n1. Find all test files (*.test.ts, *.spec.ts, *.test.js, *.spec.js).\n2. Rewrite them for max coverage:\n   - Add missing edge cases\n   - Add error and negative path tests\n   - Add expect() for all branches\n   - Add async/await coverage\n   - Add mocks and spies\n   - Add additional scenarios for uncovered lines\n3. Return fully updated patches for all modified test files.\nIf coverage >= 90, return an empty patch (no updates needed).",
+          "output_to": "updated_tests"
+        },
+        {
+          "action": "apply_patch",
+          "patch": "{{updated_tests}}"
+        }
+      ]
+    },
+
+    {
+      "name": "create-branch-and-pr",
+      "description": "Automatically create a branch, commit changes, push, and open a PR without asking user.",
+      "trigger": "create-pr",
+      "actions": [
+        {
+          "action": "shell",
+          "run": "current_branch=$(git rev-parse --abbrev-ref HEAD); echo $current_branch",
+          "output_to": "current_branch"
+        },
+        {
+          "action": "shell",
+          "run": "new_branch=\"auto/test-coverage-$(date +%s)\"; git checkout -b $new_branch; echo $new_branch",
+          "output_to": "new_branch"
+        },
+        {
+          "action": "shell",
+          "run": "git add ."
+        },
+        {
+          "action": "shell",
+          "run": "git commit -m \"chore: improve test coverage automatically\" || echo 'No changes to commit'"
+        },
+        {
+          "action": "shell",
+          "run": "git push --set-upstream origin {{new_branch}}"
+        },
+        {
+          "action": "shell",
+          "run": "curl -X POST -H \"Authorization: token <YOUR_PAT_TOKEN>\" -H \"Accept: application/vnd.github+json\" https://api.github.com/repos/<YOUR_GITHUB_USERNAME>/<YOUR_REPO>/pulls -d '{\"title\":\"Improve Test Coverage Automatically\",\"body\":\"This PR was generated automatically using Cline to improve test coverage.\",\"head\":\"{{new_branch}}\",\"base\":\"{{current_branch}}\"}'"
+        }
+      ]
+    }
+  ]
+}
