@@ -1,0 +1,155 @@
+{
+  "rules": [
+    {
+      "name": "improve-test-coverage",
+      "description": "Scan all test files in the repo and automatically rewrite them to maximize test coverage using mocks, additional branches, missing assertions, and edge cases.",
+      "trigger": "improve-test-coverage",
+      "actions": [
+        {
+          "action": "shell",
+          "run": "git ls-files | grep -E '\\.(test|spec)\\.(ts|js)$' || true",
+          "output_to": "test_files"
+        },
+        {
+          "action": "agent",
+          "task": "For each test file listed below, improve test coverage by adding edge cases, negative tests, mocks, missing branches and error scenarios.\n\nTest files:\n{{test_files}}",
+          "output_to": "updated_tests"
+        },
+        {
+          "action": "apply_patch",
+          "patch": "{{updated_tests}}"
+        }
+      ]
+    },
+
+    {
+      "name": "coverage-report",
+      "description": "Runs Jest command in terminal and prints a summary.",
+      "trigger": "coverage-report",
+      "actions": [
+        {
+          "action": "shell",
+          "run": "npm test -- --coverage || yarn test --coverage"
+        }
+      ]
+    },
+
+    {
+      "name": "improve-and-raise-coverage",
+      "description": "Runs test coverage, identifies uncovered areas, rewrites test files to improve test coverage, and repeats until >= 90%.",
+      "trigger": "improve-and-raise-coverage",
+      "actions": [
+        {
+          "action": "shell",
+          "run": "npm test -- --coverage --coverageReporters=text-summary > coverage.txt || yarn test --coverage --coverageReporters=text-summary > coverage.txt"
+        },
+        {
+          "action": "shell",
+          "run": "grep -oP 'All files.*?\\K\\d+(?=%)' coverage.txt",
+          "output_to": "coverage_percent"
+        },
+        {
+          "action": "agent",
+          "task": "Current test coverage: {{coverage_percent}}%.\nIf below 90%, rewrite test files with full coverage improvements. Return patch.\nIf already above 90%, return an empty patch.",
+          "output_to": "updated_tests"
+        },
+        {
+          "action": "apply_patch",
+          "patch": "{{updated_tests}}"
+        }
+      ]
+    },
+
+    {
+      "name": "create-branch-and-pr",
+      "description": "Automatically create a branch, commit changes, push, and open a PR using GitHub API.",
+      "trigger": "create-pr",
+      "actions": [
+        {
+          "action": "shell",
+          "run": "current_branch=$(git rev-parse --abbrev-ref HEAD); echo $current_branch",
+          "output_to": "current_branch"
+        },
+        {
+          "action": "shell",
+          "run": "new_branch=\"auto-test-coverage-$(date +%s)\"; git checkout -b $new_branch; echo $new_branch",
+          "output_to": "new_branch"
+        },
+        {
+          "action": "shell",
+          "run": "git add ."
+        },
+        {
+          "action": "shell",
+          "run": "git commit -m \"chore: improve test coverage automatically\" || echo 'No changes to commit'"
+        },
+        {
+          "action": "shell",
+          "run": "git push --set-upstream origin {{new_branch}}"
+        },
+        {
+          "action": "shell",
+          "run": "curl -X POST \
+            -H \"Authorization: token $GITHUB_TOKEN\" \
+            -H \"Accept: application/vnd.github+json\" \
+            https://api.github.com/repos/imguccho/code-coverage-analysis/pulls \
+            -d '{\"title\":\"Improve Test Coverage Automatically\",\"body\":\"This PR was generated automatically using Cline.\",\"head\":\"{{new_branch}}\",\"base\":\"{{current_branch}}\"}'"
+        }
+      ]
+    },
+    {
+      "name": "confirm-and-create-pr",
+      "description": "Ask user confirmation before every step: branch creation, commit, push, and PR.",
+      "trigger": "confirm-create-pr",
+      "actions": [
+        {
+          "action": "agent",
+          "task": "About to create a new branch. Command:\n git checkout -b auto-confirm-$(date +%s)\n\nProceed? (yes/no)",
+          "output_to": "confirm_branch"
+        },
+        {
+          "action": "shell",
+          "run": "[[ '{{confirm_branch}}' == 'yes' ]] && current_branch=$(git rev-parse --abbrev-ref HEAD); echo $current_branch || exit 1",
+          "output_to": "current_branch"
+        },
+        {
+          "action": "shell",
+          "run": "[[ '{{confirm_branch}}' == 'yes' ]] && new_branch=\"auto-confirm-$(date +%s)\"; git checkout -b $new_branch; echo $new_branch || exit 1",
+          "output_to": "new_branch"
+        },
+        {
+          "action": "agent",
+          "task": "About to commit all changes using message:\n\n  chore: confirm flow commit\n\nProceed? (yes/no)",
+          "output_to": "confirm_commit"
+        },
+        {
+          "action": "shell",
+          "run": "[[ '{{confirm_commit}}' == 'yes' ]] && git add . && git commit -m \"chore: confirm flow commit\" || exit 1"
+        },
+        {
+          "action": "agent",
+          "task": "About to push branch '{{new_branch}}' to origin.\nProceed? (yes/no)",
+          "output_to": "confirm_push"
+        },
+        {
+          "action": "shell",
+          "run": "[[ '{{confirm_push}}' == 'yes' ]] && git push --set-upstream origin {{new_branch}} || exit 1"
+        },
+
+        {
+          "action": "agent",
+          "task": "About to create PR using GitHub API.\nProceed? (yes/no)",
+          "output_to": "confirm_pr"
+        },
+        {
+          "action": "shell",
+          "run": "[[ '{{confirm_pr}}' == 'yes' ]] && curl -X POST \
+            -H \"Authorization: token $GITHUB_TOKEN\" \
+            -H \"Accept: application/vnd.github+json\" \
+            https://api.github.com/repos/imguccho/code-coverage-analysis/pulls \
+            -d '{\"title\":\"PR with Confirmation\",\"body\":\"User confirmed all steps.\",\"head\":\"{{new_branch}}\",\"base\":\"{{current_branch}}\"}' || exit 1"
+        }
+      ]
+    }
+  ]
+}

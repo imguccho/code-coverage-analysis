@@ -53,7 +53,7 @@ const About: React.FC = () => {
 
   return (
     <div className="about-container">
-      <h1>This is About Our Company</h1>
+      <h1>Title - This is About Our Company</h1>
       <p>Learn more about our team and company statistics.</p>
       
       <div className="navigation-buttons">
