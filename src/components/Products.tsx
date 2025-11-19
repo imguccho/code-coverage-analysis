@@ -45,7 +45,7 @@ const Products: React.FC = () => {
 
   return (
     <div className="products-container">
-      <h1>Products Page</h1>
+      <h1>This is Our Products Page</h1>
       <p>Browse our collection of products with dummy data.</p>
       
       <div className="navigation-buttons">
