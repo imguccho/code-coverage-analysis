@@ -59,7 +59,6 @@
         }
       ]
     },
-
     {
       "name": "create-branch-and-pr",
       "description": "Automatically create a branch, commit changes, push, and open a PR using GitHub API.",
@@ -148,6 +147,62 @@
             -H \"Accept: application/vnd.github+json\" \
             https://api.github.com/repos/imguccho/code-coverage-analysis/pulls \
             -d '{\"title\":\"PR with Confirmation\",\"body\":\"User confirmed all steps.\",\"head\":\"{{new_branch}}\",\"base\":\"{{current_branch}}\"}' || exit 1"
+        }
+      ]
+    },
+    {
+      "name": "improve-coverage-and-create-pr",
+      "description": "Improves test coverage, creates branch, commits, pushes, and opens PR automatically. Only asks user for GitHub token.",
+      "trigger": "improve-coverage-pr",
+      "actions": [
+        {
+          "action": "shell",
+          "run": "git ls-files | grep -E '\\.(test|spec)\\.(ts|js)$' || true",
+          "output_to": "test_files"
+        },
+        {
+          "action": "agent",
+          "task": "Improve test coverage for the following test files. Add edge cases, negative tests, mocks, branches and missing assertions.\n\nFiles:\n{{test_files}}\n\nReturn a valid unified patch.",
+          "output_to": "updated_tests"
+        },
+        {
+          "action": "apply_patch",
+          "patch": "{{updated_tests}}"
+        },
+        {
+          "action": "shell",
+          "run": "current_branch=$(git rev-parse --abbrev-ref HEAD); echo $current_branch",
+          "output_to": "current_branch"
+        },
+        {
+          "action": "shell",
+          "run": "timestamp=$(date +%Y%m%d-%H%M%S); new_branch=\"feature-improved-test-coverage-$timestamp\"; git checkout -b $new_branch; echo $new_branch",
+          "output_to": "new_branch"
+        },
+        {
+          "action": "shell",
+          "run": "git add ."
+        },
+        {
+          "action": "shell",
+          "run": "git commit -m \"chore: improve test coverage automatically\" || echo 'No changes to commit'"
+        },
+        {
+          "action": "shell",
+          "run": "git push --set-upstream origin {{new_branch}}"
+        },
+        {
+          "action": "agent",
+          "task": "Please provide your GitHub token (GITHUB_TOKEN). It will be used once to create the PR.",
+          "output_to": "git_token"
+        },
+        {
+          "action": "shell",
+          "run": "curl -X POST \
+        -H \"Authorization: token {{git_token}}\" \
+        -H \"Accept: application/vnd.github+json\" \
+        https://api.github.com/repos/imguccho/code-coverage-analysis/pulls \
+        -d '{\"title\":\"Improve Test Coverage Automatically\",\"body\":\"This PR was generated automatically using Cline.\",\"head\":\"{{new_branch}}\",\"base\":\"{{current_branch}}\"}'"
         }
       ]
     }

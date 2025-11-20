@@ -3,7 +3,6 @@ module.exports = {
     'src/**/*.{js,jsx,ts,tsx}',
     '!src/**/*.d.ts',
     '!src/index.tsx',
-    '!src/reportWebVitals.ts',
     '!src/setupTests.ts',
   ],
   coverageThreshold: {
@@ -23,4 +22,4 @@ module.exports = {
   moduleNameMapper: {
     '^react-router-dom$': '<rootDir>/src/__mocks__/react-router-dom.ts',
   },
-}; 
+};
