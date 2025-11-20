@@ -19,8 +19,32 @@ describe('Home Component', () => {
 
   test('renders users section with title', () => {
     render(<Home />);
-    
+
     expect(screen.getByText('Users List')).toBeInTheDocument();
+  });
+
+  test('renders all users with correct information', () => {
+    render(<Home />);
+
+    // Check user names
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+    expect(screen.getByText('Bob Johnson')).toBeInTheDocument();
+    expect(screen.getByText('Alice Brown')).toBeInTheDocument();
+
+    // Check emails (uncovered lines)
+    expect(screen.getByText('Email: john@example.com')).toBeInTheDocument();
+    expect(screen.getByText('Email: jane@example.com')).toBeInTheDocument();
+    expect(screen.getByText('Email: bob@example.com')).toBeInTheDocument();
+    expect(screen.getByText('Email: alice@example.com')).toBeInTheDocument();
+
+    // Check roles - check that Admin appears and Moderator appears
+    expect(screen.getByText('Role: Admin')).toBeInTheDocument();
+    expect(screen.getByText('Role: Moderator')).toBeInTheDocument();
+
+    // Check that there are exactly 2 users with "Role: User" (Jane and Alice)
+    const userRoles = screen.getAllByText('Role: User');
+    expect(userRoles).toHaveLength(2);
   });
 
   test('navigation buttons are clickable', () => {
@@ -33,4 +57,4 @@ describe('Home Component', () => {
     expect(aboutButton).toBeEnabled();
   });
 
-}); 
+});

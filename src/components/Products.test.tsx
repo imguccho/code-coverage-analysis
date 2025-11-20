@@ -5,8 +5,8 @@ import Products from './Products';
 describe('Products Component', () => {
   test('renders products page with title and description', () => {
     render(<Products />);
-    
-    expect(screen.getByText('Products Page')).toBeInTheDocument();
+
+    expect(screen.getByText('Title - This is Our Products Page')).toBeInTheDocument();
     expect(screen.getByText('Browse our collection of products with dummy data.')).toBeInTheDocument();
   });
 
@@ -23,20 +23,48 @@ describe('Products Component', () => {
     expect(screen.getByText('Filter by Category:')).toBeInTheDocument();
   });
 
-  // test('renders all category filter buttons', () => {
-  //   render(<Products />);
-  //   // ...
-  // });
+  test('renders all category filter buttons', () => {
+    render(<Products />);
 
-  // test('filters products by category when category button is clicked', () => {
-  //   render(<Products />);
-  //   // ...
-  // });
+    expect(screen.getByText('All')).toBeInTheDocument();
+    expect(screen.getByText('Electronics')).toBeInTheDocument();
+    expect(screen.getByText('Kitchen')).toBeInTheDocument();
+    expect(screen.getByText('Clothing')).toBeInTheDocument();
+  });
 
-  // test('shows all products when "All" category is selected', () => {
-  //   render(<Products />);
-  //   // ...
-  // });
+  test('filters products by category when category button is clicked', () => {
+    render(<Products />);
+
+    // Initially all products should be shown
+    expect(screen.getByText('Laptop')).toBeInTheDocument();
+    expect(screen.getByText('Coffee Mug')).toBeInTheDocument();
+    expect(screen.getByText('T-Shirt')).toBeInTheDocument();
+
+    // Click Electronics filter (this should cover the filtering logic)
+    fireEvent.click(screen.getByText('Electronics'));
+
+    // Only electronics should remain
+    expect(screen.getByText('Laptop')).toBeInTheDocument();
+    expect(screen.getByText('Smartphone')).toBeInTheDocument();
+    expect(screen.getByText('Headphones')).toBeInTheDocument();
+    expect(screen.queryByText('Coffee Mug')).not.toBeInTheDocument();
+    expect(screen.queryByText('T-Shirt')).not.toBeInTheDocument();
+  });
+
+  test('shows all products when "All" category is selected', () => {
+    render(<Products />);
+
+    // Start with Electronics filter
+    fireEvent.click(screen.getByText('Electronics'));
+    expect(screen.queryByText('Coffee Mug')).not.toBeInTheDocument();
+
+    // Click All to show everything again
+    fireEvent.click(screen.getByText('All'));
+
+    expect(screen.getByText('Laptop')).toBeInTheDocument();
+    expect(screen.getByText('Coffee Mug')).toBeInTheDocument();
+    expect(screen.getByText('T-Shirt')).toBeInTheDocument();
+  });
 
   test('renders all products with correct data', () => {
     render(<Products />);
@@ -105,4 +133,4 @@ describe('Products Component', () => {
   //   render(<Products />);
   //   // ...
   // });
-}); 
+});
