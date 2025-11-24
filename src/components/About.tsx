@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface TeamMember {
@@ -9,6 +9,10 @@ interface TeamMember {
   experience: number;
 }
 
+interface TeamMemberCardProps {
+  member: TeamMember;
+}
+
 interface CompanyStat {
   id: number;
   label: string;
@@ -16,11 +20,46 @@ interface CompanyStat {
   description: string;
 }
 
+interface CompanyStatCardProps {
+  stat: CompanyStat;
+}
+
+const TeamMemberCard: React.FC<TeamMemberCardProps> = memo(({ member }) => {
+  const getExperienceLevel = useCallback((years: number): string => {
+    if (years >= 10) return 'Senior';
+    if (years >= 5) return 'Mid-level';
+    return 'Junior';
+  }, []);
+
+  return (
+    <div className="team-card">
+      <h3>{member.name}</h3>
+      <p className="position">{member.position}</p>
+      <p className="department">{member.department}</p>
+      <p className="experience">
+        Experience: {member.experience} years ({getExperienceLevel(member.experience)})
+      </p>
+    </div>
+  );
+});
+
+TeamMemberCard.displayName = 'TeamMemberCard';
+
+const CompanyStatCard: React.FC<CompanyStatCardProps> = memo(({ stat }) => (
+  <div className="stat-card">
+    <h3>{stat.value}</h3>
+    <p className="stat-label">{stat.label}</p>
+    <p className="stat-description">{stat.description}</p>
+  </div>
+));
+
+CompanyStatCard.displayName = 'CompanyStatCard';
+
 const About: React.FC = () => {
   const navigate = useNavigate();
 
   // Dummy data for team members
-  const teamMembers: TeamMember[] = [
+  const teamMembers: readonly TeamMember[] = [
     { id: 1, name: 'Sarah Wilson', position: 'CEO', department: 'Executive', experience: 15 },
     { id: 2, name: 'Mike Chen', position: 'CTO', department: 'Technology', experience: 12 },
     { id: 3, name: 'Emily Davis', position: 'Design Lead', department: 'Design', experience: 8 },
@@ -30,26 +69,26 @@ const About: React.FC = () => {
   ];
 
   // Dummy data for company statistics
-  const companyStats: CompanyStat[] = [
+  const companyStats: readonly CompanyStat[] = [
     { id: 1, label: 'Years in Business', value: '10+', description: 'Over a decade of experience' },
     { id: 2, label: 'Team Members', value: '50+', description: 'Dedicated professionals' },
     { id: 3, label: 'Projects Completed', value: '200+', description: 'Successful deliveries' },
     { id: 4, label: 'Client Satisfaction', value: '98%', description: 'Happy customers' },
   ];
 
-  const handleNavigateToHome = () => {
+  const handleNavigateToHome = useCallback((): void => {
     navigate('/');
-  };
+  }, [navigate]);
 
-  const handleNavigateToProducts = () => {
+  const handleNavigateToProducts = useCallback((): void => {
     navigate('/products');
-  };
+  }, [navigate]);
 
-  const getExperienceLevel = (years: number): string => {
+  const getExperienceLevel = useCallback((years: number): string => {
     if (years >= 10) return 'Senior';
     if (years >= 5) return 'Mid-level';
     return 'Junior';
-  };
+  }, []);
 
   return (
     <div className="about-container">
@@ -69,11 +108,7 @@ const About: React.FC = () => {
         <h2>Company Statistics</h2>
         <div className="stats-grid">
           {companyStats.map((stat) => (
-            <div key={stat.id} className="stat-card">
-              <h3>{stat.value}</h3>
-              <p className="stat-label">{stat.label}</p>
-              <p className="stat-description">{stat.description}</p>
-            </div>
+            <CompanyStatCard key={stat.id} stat={stat} />
           ))}
         </div>
       </div>
@@ -82,14 +117,7 @@ const About: React.FC = () => {
         <h2>Our Team</h2>
         <div className="team-grid">
           {teamMembers.map((member) => (
-            <div key={member.id} className="team-card">
-              <h3>{member.name}</h3>
-              <p className="position">{member.position}</p>
-              <p className="department">{member.department}</p>
-              <p className="experience">
-                Experience: {member.experience} years ({getExperienceLevel(member.experience)})
-              </p>
-            </div>
+            <TeamMemberCard key={member.id} member={member} />
           ))}
         </div>
       </div>
@@ -106,4 +134,6 @@ const About: React.FC = () => {
   );
 };
 
-export default About; 
+About.displayName = 'About';
+
+export default memo(About);

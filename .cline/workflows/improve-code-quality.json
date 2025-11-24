@@ -1,0 +1,60 @@
+{
+  "name": "Improve Code Quality and Fix Lint Issues",
+  "description": "Automatically refactors code to improve quality and fixes all lint errors. Creates PR only after user approval.",
+  "steps": [
+    {
+      "title": "Find all source files",
+      "action": {
+        "type": "shell",
+        "run": "git ls-files | grep -E '\\.(ts|tsx|js|jsx)$' || true"
+      },
+      "output_to": "source_files"
+    },
+    {
+      "title": "Improve code quality & fix lint issues",
+      "action": {
+        "type": "agent",
+        "task": "Improve code quality and fix lint errors for the following files:\n\n{{source_files}}\n\nTasks:\n- Fix all ESLint and TypeScript errors\n- Remove unused variables, imports, dead code\n- Improve readability and structure\n- Ensure functions have proper types\n- Refactor overly complex logic\n- Add missing return types\n- Improve naming consistency\n\nReturn ONLY a valid unified patch."
+      },
+      "output_to": "refactor_patch"
+    },
+    {
+      "title": "Apply patch",
+      "action": {
+        "type": "apply_patch",
+        "patch": "{{refactor_patch}}"
+      }
+    },
+    {
+      "title": "Run lint check",
+      "action": {
+        "type": "shell",
+        "run": "npm run lint --silent",
+        "error_message": "❌ Lint check failed. The workflow will stop so you can fix remaining issues."
+      }
+    },
+    {
+      "title": "Create branch",
+      "action": {
+        "type": "shell",
+        "run": "BRANCH=\"improve-code-quality-$(date +%s)\" && git checkout -b $BRANCH && echo $BRANCH",
+        "output_to": "branch_name"
+      }
+    },
+    {
+      "title": "Ask for PR approval",
+      "action": {
+        "type": "agent",
+        "task": "All lint issues are fixed and code quality improvements are ready.\nDo you want to create a PR? Reply YES or NO."
+      },
+      "output_to": "pr_approval"
+    },
+    {
+      "title": "Create PR if approved",
+      "action": {
+        "type": "shell",
+        "run": "if [ \"{{pr_approval}}\" = \"YES\" ]; then git add . && git commit -m \"chore: improve code quality and fix lint issues\" || echo \"Nothing to commit\"; git push -u origin {{branch_name}}; gh pr create --fill --base main --head {{branch_name}}; else echo \"PR creation skipped.\"; fi"
+      }
+    }
+  ]
+}

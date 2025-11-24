@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Home from './components/Home';
 import Products from './components/Products';
 import About from './components/About';
 
-function App() {
+const App: React.FC = memo(() => {
   return (
     <Router>
       <div className="App">
@@ -17,6 +17,8 @@ function App() {
       </div>
     </Router>
   );
-}
+});
+
+App.displayName = 'App';
 
 export default App;

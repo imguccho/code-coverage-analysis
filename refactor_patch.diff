@@ -1,0 +1,544 @@
+diff --git a/src/App.tsx b/src/App.tsx
+index 1234567..abcdefg 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -1,20 +1,20 @@
+-import React from 'react';
+-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+-import './App.css';
+-import Home from './components/Home';
+-import Products from './components/Products';
+-import About from './components/About';
++import React, { memo } from 'react';
++import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
++import './App.css';
++import Home from './components/Home';
++import Products from './components/Products';
++import About from './components/About';
+ 
+-function App() {
++const App: React.FC = memo(() => {
+   return (
+     <Router>
+       <div className="App">
+         <Routes>
+           <Route path="/" element={<Home />} />
+           <Route path="/products" element={<Products />} />
+           <Route path="/about" element={<About />} />
+         </Routes>
+       </div>
+     </Router>
+   );
+-}
++});
+ 
+-export default App;
++App.displayName = 'App';
++
++export default App;
+diff --git a/src/components/Home.tsx b/src/components/Home.tsx
+index abcdefg..1234567 100644
+--- a/src/components/Home.tsx
++++ b/src/components/Home.tsx
+@@ -1,55 +1,79 @@
+-import React from 'react';
++import React, { memo, useCallback } from 'react';
+ import { useNavigate } from 'react-router-dom';
+ 
+ interface User {
+   id: number;
+   name: string;
+   email: string;
+   role: string;
+ }
+ 
++interface UserCardProps {
++  user: User;
++}
++
++const UserCard: React.FC<UserCardProps> = memo(({ user }) => (
++  <div className="user-card">
++    <h3>{user.name}</h3>
++    <p>Email: {user.email}</p>
++    <p>Role: {user.role}</p>
++  </div>
++));
++
++UserCard.displayName = 'UserCard';
++
+ const Home: React.FC = () => {
+   const navigate = useNavigate();
+ 
+   // Dummy data for users
+-  const users: User[] = [
++  const users: readonly User[] = [
+     { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Admin' },
+     { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'User' },
+     { id: 3, name: 'Bob Johnson', email: 'bob@example.com', role: 'Moderator' },
+     { id: 4, name: 'Alice Brown', email: 'alice@example.com', role: 'User' },
+   ];
+ 
+-  const handleNavigateToProducts = () => {
++  const handleNavigateToProducts = useCallback((): void => {
+     navigate('/products');
+-  };
++  }, [navigate]);
+ 
+-  const handleNavigateToAbout = () => {
++  const handleNavigateToAbout = useCallback((): void => {
+     navigate('/about');
+-  };
++  }, [navigate]);
+ 
+   return (
+     <div className="home-container">
+       <h1>Welcome to Our Application</h1>
+-      <p>This is the home page with some dummy user data.</p>
++      <p>This is the home page with some dummy user data.</p>
+       
+       <div className="navigation-buttons">
+         <button onClick={handleNavigateToProducts} className="nav-button">
+           Go to Products
+         </button>
+         <button onClick={handleNavigateToAbout} className="nav-button">
+           Go to About
+         </button>
+       </div>
+ 
+       <div className="users-section">
+         <h2>Users List</h2>
+         <div className="users-grid">
+-          {users.map((user) => (
+-            <div key={user.id} className="user-card">
+-              <h3>{user.name}</h3>
+-              <p>Email: {user.email}</p>
+-              <p>Role: {user.role}</p>
+-            </div>
+-          ))}
++          {users.map((user) => (
++            <UserCard key={user.id} user={user} />
++          ))}
+         </div>
+       </div>
+     </div>
+   );
+ };
+ 
+-export default Home;
++Home.displayName = 'Home';
++
++export default memo(Home);
+diff --git a/src/components/Products.tsx b/src/components/Products.tsx
+index abcdefg..1234567 100644
+--- a/src/components/Products.tsx
++++ b/src/components/Products.tsx
+@@ -1,91 +1,126 @@
+-import React, { useState } from 'react';
++import React, { useState, memo, useCallback, useMemo } from 'react';
+ import { useNavigate } from 'react-router-dom';
+ 
+ interface Product {
+   id: number;
+   name: string;
+   price: number;
+   category: string;
+   inStock: boolean;
+ }
+ 
++interface ProductCardProps {
++  product: Product;
++}
++
++interface CategoryButtonProps {
++  category: string;
++  isSelected: boolean;
++  onCategoryChange: (category: string) => void;
++}
++
++const ProductCard: React.FC<ProductCardProps> = memo(({ product }) => (
++  <div className={`product-card ${!product.inStock ? 'out-of-stock' : ''}`}>
++    <h3>{product.name}</h3>
++    <p>Price: ${product.price}</p>
++    <p>Category: {product.category}</p>
++    <p>Status: {product.inStock ? 'In Stock' : 'Out of Stock'}</p>
++  </div>
++));
++
++ProductCard.displayName = 'ProductCard';
++
++const CategoryButton: React.FC<CategoryButtonProps> = memo(({ 
++  category, 
++  isSelected, 
++  onCategoryChange 
++}) => {
++  const handleClick = useCallback((): void => {
++    onCategoryChange(category);
++  }, [category, onCategoryChange]);
++
++  return (
++    <button
++      onClick={handleClick}
++      className={`category-button ${isSelected ? 'active' : ''}`}
++    >
++      {category.charAt(0).toUpperCase() + category.slice(1)}
++    </button>
++  );
++});
++
++CategoryButton.displayName = 'CategoryButton';
++
+ const Products: React.FC = () => {
+   const navigate = useNavigate();
+-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
++  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+ 
+   // Dummy data for products
+-  const products: Product[] = [
++  const products: readonly Product[] = [
+     { id: 1, name: 'Laptop', price: 999.99, category: 'Electronics', inStock: true },
+     { id: 2, name: 'Smartphone', price: 699.99, category: 'Electronics', inStock: true },
+     { id: 3, name: 'Headphones', price: 199.99, category: 'Electronics', inStock: false },
+     { id: 4, name: 'Coffee Mug', price: 15.99, category: 'Kitchen', inStock: true },
+     { id: 5, name: 'Blender', price: 89.99, category: 'Kitchen', inStock: true },
+     { id: 6, name: 'T-Shirt', price: 25.99, category: 'Clothing', inStock: true },
+     { id: 7, name: 'Jeans', price: 79.99, category: 'Clothing', inStock: false },
+     { id: 8, name: 'Sneakers', price: 129.99, category: 'Clothing', inStock: true },
+   ];
+ 
+-  const handleNavigateToHome = () => {
++  const handleNavigateToHome = useCallback((): void => {
+     navigate('/');
+-  };
++  }, [navigate]);
+ 
+-  const handleNavigateToAbout = () => {
++  const handleNavigateToAbout = useCallback((): void => {
+     navigate('/about');
+-  };
++  }, [navigate]);
+ 
+-  const handleCategoryChange = (category: string) => {
++  const handleCategoryChange = useCallback((category: string): void => {
+     setSelectedCategory(category);
+-  };
++  }, []);
+ 
+-  const filteredProducts = selectedCategory === 'all' 
+-    ? products 
+-    : products.filter(product => product.category === selectedCategory);
++  const categories = useMemo<string[]>(() => 
++    ['all', ...Array.from(new Set(products.map(p => p.category)))], 
++    [products]
++  );
+ 
+-  const categories = ['all', ...Array.from(new Set(products.map(p => p.category)))];
++  const filteredProducts = useMemo(() => 
++    selectedCategory === 'all' 
++      ? products 
++      : products.filter(product => product.category === selectedCategory),
++    [products, selectedCategory]
++  );
+ 
+   return (
+     <div className="products-container">
+       <h1>Title - This is Our Products Page</h1>
+-      <p>Browse our collection of products with dummy data.</p>
++      <p>Browse our collection of products with dummy data.</p>
+       
+       <div className="navigation-buttons">
+         <button onClick={handleNavigateToHome} className="nav-button">
+           Go to Home
+         </button>
+         <button onClick={handleNavigateToAbout} className="nav-button">
+           Go to About
+         </button>
+       </div>
+ 
+       <div className="category-filter">
+         <h3>Filter by Category:</h3>
+         <div className="category-buttons">
+-          {categories.map((category) => (
+-            <button
+-              key={category}
+-              onClick={() => handleCategoryChange(category)}
+-              className={`category-button ${selectedCategory === category ? 'active' : ''}`}
+-            >
+-              {category.charAt(0).toUpperCase() + category.slice(1)}
+-            </button>
+-          ))}
++          {categories.map((category) => (
++            <CategoryButton
++              key={category}
++              category={category}
++              isSelected={selectedCategory === category}
++              onCategoryChange={handleCategoryChange}
++            />
++          ))}
+         </div>
+       </div>
+ 
+       <div className="products-grid">
+-        {filteredProducts.map((product) => (
+-          <div key={product.id} className={`product-card ${!product.inStock ? 'out-of-stock' : ''}`}>
+-            <h3>{product.name}</h3>
+-            <p>Price: ${product.price}</p>
+-            <p>Category: {product.category}</p>
+-            <p>Status: {product.inStock ? 'In Stock' : 'Out of Stock'}</p>
+-          </div>
+-        ))}
++        {filteredProducts.map((product) => (
++          <ProductCard key={product.id} product={product} />
++        ))}
+       </div>
+     </div>
+   );
+ };
+ 
+-export default Products;
++Products.displayName = 'Products';
++
++export default memo(Products);
+diff --git a/src/components/About.tsx b/src/components/About.tsx
+index abcdefg..1234567 100644
+--- a/src/components/About.tsx
++++ b/src/components/About.tsx
+@@ -1,109 +1,140 @@
+-import React from 'react';
++import React, { memo, useCallback } from 'react';
+ import { useNavigate } from 'react-router-dom';
+ 
+ interface TeamMember {
+   id: number;
+   name: string;
+   position: string;
+   department: string;
+   experience: number;
+ }
+ 
++interface TeamMemberCardProps {
++  member: TeamMember;
++}
++
+ interface CompanyStat {
+   id: number;
+   label: string;
+   value: string;
+   description: string;
+ }
+ 
++interface CompanyStatCardProps {
++  stat: CompanyStat;
++}
++
++const TeamMemberCard: React.FC<TeamMemberCardProps> = memo(({ member }) => {
++  const getExperienceLevel = useCallback((years: number): string => {
++    if (years >= 10) return 'Senior';
++    if (years >= 5) return 'Mid-level';
++    return 'Junior';
++  }, []);
++
++  return (
++    <div className="team-card">
++      <h3>{member.name}</h3>
++      <p className="position">{member.position}</p>
++      <p className="department">{member.department}</p>
++      <p className="experience">
++        Experience: {member.experience} years ({getExperienceLevel(member.experience)})
++      </p>
++    </div>
++  );
++});
++
++TeamMemberCard.displayName = 'TeamMemberCard';
++
++const CompanyStatCard: React.FC<CompanyStatCardProps> = memo(({ stat }) => (
++  <div className="stat-card">
++    <h3>{stat.value}</h3>
++    <p className="stat-label">{stat.label}</p>
++    <p className="stat-description">{stat.description}</p>
++  </div>
++));
++
++CompanyStatCard.displayName = 'CompanyStatCard';
++
+ const About: React.FC = () => {
+   const navigate = useNavigate();
+ 
+   // Dummy data for team members
+-  const teamMembers: TeamMember[] = [
++  const teamMembers: readonly TeamMember[] = [
+     { id: 1, name: 'Sarah Wilson', position: 'CEO', department: 'Executive', experience: 15 },
+     { id: 2, name: 'Mike Chen', position: 'CTO', department: 'Technology', experience: 12 },
+     { id: 3, name: 'Emily Davis', position: 'Design Lead', department: 'Design', experience: 8 },
+     { id: 4, name: 'David Rodriguez', position: 'Senior Developer', department: 'Engineering', experience: 10 },
+     { id: 5, name: 'Lisa Thompson', position: 'Marketing Manager', department: 'Marketing', experience: 7 },
+     { id: 6, name: 'James Miller', position: 'Product Manager', department: 'Product', experience: 9 },
+   ];
+ 
+   // Dummy data for company statistics
+-  const companyStats: CompanyStat[] = [
++  const companyStats: readonly CompanyStat[] = [
+     { id: 1, label: 'Years in Business', value: '10+', description: 'Over a decade of experience' },
+     { id: 2, label: 'Team Members', value: '50+', description: 'Dedicated professionals' },
+     { id: 3, label: 'Projects Completed', value: '200+', description: 'Successful deliveries' },
+     { id: 4, label: 'Client Satisfaction', value: '98%', description: 'Happy customers' },
+   ];
+ 
+-  const handleNavigateToHome = () => {
++  const handleNavigateToHome = useCallback((): void => {
+     navigate('/');
+-  };
++  }, [navigate]);
+ 
+-  const handleNavigateToProducts = () => {
++  const handleNavigateToProducts = useCallback((): void => {
+     navigate('/products');
+-  };
++  }, [navigate]);
+ 
+-  const getExperienceLevel = (years: number): string => {
+-    if (years >= 10) return 'Senior';
+-    if (years >= 5) return 'Mid-level';
+-    return 'Junior';
+-  };
++  const getExperienceLevel = useCallback((years: number): string => {
++    if (years >= 10) return 'Senior';
++    if (years >= 5) return 'Mid-level';
++    return 'Junior';
++  }, []);
+ 
+   return (
+     <div className="about-container">
+       <h1>Title - This is About Our Company</h1>
+-      <p>Learn more about our team and company statistics.</p>
++      <p>Learn more about our team and company statistics.</p>
+       
+       <div className="navigation-buttons">
+         <button onClick={handleNavigateToHome} className="nav-button">
+           Go to Home
+         </button>
+         <button onClick={handleNavigateToProducts} className="nav-button">
+           Go to Products
+         </button>
+       </div>
+ 
+       <div className="company-stats">
+         <h2>Company Statistics</h2>
+         <div className="stats-grid">
+-          {companyStats.map((stat) => (
+-            <div key={stat.id} className="stat-card">
+-              <h3>{stat.value}</h3>
+-              <p className="stat-label">{stat.label}</p>
+-              <p className="stat-description">{stat.description}</p>
+-            </div>
+-          ))}
++          {companyStats.map((stat) => (
++            <CompanyStatCard key={stat.id} stat={stat} />
++          ))}
+         </div>
+       </div>
+ 
+       <div className="team-section">
+         <h2>Our Team</h2>
+         <div className="team-grid">
+-          {teamMembers.map((member) => (
+-            <div key={member.id} className="team-card">
+-              <h3>{member.name}</h3>
+-              <p className="position">{member.position}</p>
+-              <p className="department">{member.department}</p>
+-              <p className="experience">
+-                Experience: {member.experience} years ({getExperienceLevel(member.experience)})
+-              </p>
+-            </div>
+-          ))}
++          {teamMembers.map((member) => (
++            <TeamMemberCard key={member.id} member={member} />
++          ))}
+         </div>
+       </div>
+ 
+       <div className="company-description">
+         <h2>Our Mission</h2>
+         <p>
+           We are dedicated to creating innovative solutions that help businesses grow and succeed. 
+           Our team of experienced professionals works tirelessly to deliver high-quality products 
+           and services that exceed our clients' expectations.
+         </p>
+       </div>
+     </div>
+   );
+ };
+ 
+-export default About;
++About.displayName = 'About';
++
++export default memo(About);
+diff --git a/src/index.tsx b/src/index.tsx
+index abcdefg..1234567 100644
+--- a/src/index.tsx
++++ b/src/index.tsx
+@@ -1,15 +1,19 @@
+-import React from 'react';
++import React, { StrictMode } from 'react';
+ import ReactDOM from 'react-dom/client';
+ import './index.css';
+ import App from './App';
+ import reportWebVitals from './reportWebVitals';
+ 
+-const root = ReactDOM.createRoot(
+-  document.getElementById('root') as HTMLElement
+-);
+-root.render(
+-  <React.StrictMode>
+-    <App />
+-  </React.StrictMode>
+-);
++const root = ReactDOM.createRoot(
++  document.getElementById('root') as HTMLElement
++);
++
++root.render(
++  <StrictMode>
++    <App />
++  </StrictMode>
++);
+ 
++// If you want to start measuring performance in your app, pass a function
++// to log results (for example: reportWebVitals(console.log))
++// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+ reportWebVitals();
+diff --git a/src/reportWebVitals.ts b/src/reportWebVitals.ts
+index abcdefg..1234567 100644
+--- a/src/reportWebVitals.ts
++++ b/src/reportWebVitals.ts
+@@ -1,12 +1,13 @@
+-import { ReportHandler } from 'web-vitals';
++import { ReportHandler, onCLS, onFID, onFCP, onLCP, onTTFB } from 'web-vitals';
+ 
+-const reportWebVitals = (onPerfEntry?: ReportHandler) => {
++const reportWebVitals = (onPerfEntry?: ReportHandler): void => {
+   if (onPerfEntry && onPerfEntry instanceof Function) {
+-    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+-      getCLS(onPerfEntry);
+-      getFID(onPerfEntry);
+-      getFCP(onPerfEntry);
+-      getLCP(onPerfEntry);
+-      getTTFB(onPerfEntry);
++    import('web-vitals').then(({ 
++      onCLS, 
++      onFID, 
++      onFCP, 
++      onLCP, 
++      onTTFB 
++    }) => {
++      onCLS(onPerfEntry);
++      onFID(onPerfEntry);
++      onFCP(onPerfEntry);
++      onLCP(onPerfEntry);
++      onTTFB(onPerfEntry);
+     });
+   }
+ };
+ 
+-export default reportWebVitals;
++export default reportWebVitals;

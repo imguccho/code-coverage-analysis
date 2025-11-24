@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface User {
@@ -8,24 +8,38 @@ interface User {
   role: string;
 }
 
+interface UserCardProps {
+  user: User;
+}
+
+const UserCard: React.FC<UserCardProps> = memo(({ user }) => (
+  <div className="user-card">
+    <h3>{user.name}</h3>
+    <p>Email: {user.email}</p>
+    <p>Role: {user.role}</p>
+  </div>
+));
+
+UserCard.displayName = 'UserCard';
+
 const Home: React.FC = () => {
   const navigate = useNavigate();
 
   // Dummy data for users
-  const users: User[] = [
+  const users: readonly User[] = [
     { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Admin' },
     { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'User' },
     { id: 3, name: 'Bob Johnson', email: 'bob@example.com', role: 'Moderator' },
     { id: 4, name: 'Alice Brown', email: 'alice@example.com', role: 'User' },
   ];
 
-  const handleNavigateToProducts = () => {
+  const handleNavigateToProducts = useCallback((): void => {
     navigate('/products');
-  };
+  }, [navigate]);
 
-  const handleNavigateToAbout = () => {
+  const handleNavigateToAbout = useCallback((): void => {
     navigate('/about');
-  };
+  }, [navigate]);
 
   return (
     <div className="home-container">
@@ -45,11 +59,7 @@ const Home: React.FC = () => {
         <h2>Users List</h2>
         <div className="users-grid">
           {users.map((user) => (
-            <div key={user.id} className="user-card">
-              <h3>{user.name}</h3>
-              <p>Email: {user.email}</p>
-              <p>Role: {user.role}</p>
-            </div>
+            <UserCard key={user.id} user={user} />
           ))}
         </div>
       </div>
@@ -57,4 +67,6 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home; 
+Home.displayName = 'Home';
+
+export default memo(Home);
