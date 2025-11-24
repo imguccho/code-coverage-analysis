@@ -16,10 +16,8 @@ module.exports = {
   coverageReporters: ['text', 'lcov', 'html'],
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
-  moduleNameMapping: {
-    '^@/(.*)$': '<rootDir>/src/$1',
-  },
   moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
     '^react-router-dom$': '<rootDir>/src/__mocks__/react-router-dom.ts',
   },
 };

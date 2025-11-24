@@ -28,14 +28,11 @@ describe('reportWebVitals', () => {
     jest.resetModules();
   });
 
-  test('should call web-vitals functions when onPerfEntry is provided', async () => {
+  test('should call web-vitals functions when onPerfEntry is provided', () => {
     const mockCallback = jest.fn();
 
     // Call the function
     reportWebVitals(mockCallback);
-
-    // Wait for the async import and function calls
-    await new Promise(resolve => setTimeout(resolve, 0));
 
     // Verify that all web-vitals functions were called with the callback
     expect(mockGetCLS).toHaveBeenCalledWith(mockCallback);
@@ -45,12 +42,9 @@ describe('reportWebVitals', () => {
     expect(mockGetTTFB).toHaveBeenCalledWith(mockCallback);
   });
 
-  test('should not call web-vitals functions when onPerfEntry is not provided', async () => {
+  test('should not call web-vitals functions when onPerfEntry is not provided', () => {
     // Call the function without a callback
     reportWebVitals();
-
-    // Wait for any potential async operations
-    await new Promise(resolve => setTimeout(resolve, 0));
 
     // Verify that no web-vitals functions were called
     expect(mockGetCLS).not.toHaveBeenCalled();
@@ -60,12 +54,9 @@ describe('reportWebVitals', () => {
     expect(mockGetTTFB).not.toHaveBeenCalled();
   });
 
-  test('should handle undefined callback', async () => {
+  test('should handle undefined callback', () => {
     // Call the function explicitly with undefined
     reportWebVitals(undefined);
-
-    // Wait for any potential async operations
-    await new Promise(resolve => setTimeout(resolve, 0));
 
     // Verify that no web-vitals functions were called
     expect(mockGetCLS).not.toHaveBeenCalled();

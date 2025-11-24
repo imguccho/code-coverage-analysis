@@ -1,0 +1,68 @@
+{
+  "name": "Improve Test Coverage",
+  "description": "Automatically improves test coverage until it reaches at least 90%. No PR creation, no branch creation.",
+  "steps": [
+    {
+      "title": "Find test files",
+      "action": {
+        "type": "shell",
+        "run": "git ls-files | grep -E '\\.(test|spec)\\.(ts|js|tsx)$' || true"
+      },
+      "output_to": "test_files"
+    },
+    {
+      "title": "Improve tests",
+      "action": {
+        "type": "agent",
+        "task": "Improve test coverage for the following test files. Add edge cases, negative tests, mocks, branches, missing assertions. Return ONLY a valid unified patch.\n\nFiles:\n{{test_files}}"
+      },
+      "output_to": "patch_output"
+    },
+    {
+      "title": "Apply patch",
+      "action": {
+        "type": "apply_patch",
+        "patch": "{{patch_output}}"
+      }
+    },
+    {
+      "title": "Check TypeScript errors",
+      "action": {
+        "type": "shell",
+        "run": "npm run build --silent",
+        "error_message": "❌ Build failed. There are TS errors. Fixing required."
+      }
+    },
+    {
+      "title": "Run tests (non-interactive)",
+      "action": {
+        "type": "shell",
+        "run": "powershell -Command \"$env:CI='true'; npx jest --runInBand --watchAll=false --bail\"",
+        "error_message": "❌ Some tests failed. The workflow will stop."
+      }
+    },
+    {
+      "title": "Generate coverage report",
+      "action": {
+        "type": "shell",
+        "run": "powershell -Command \"$env:CI='true'; npx jest --coverage --runInBand --watchAll=false\"",
+        "output_to": "coverage_output"
+      }
+    },
+    {
+      "title": "Evaluate coverage",
+      "action": {
+        "type": "agent",
+        "task": "From the following coverage report:\n\n{{coverage_output}}\n\nExtract the **overall coverage percentage**. If it is **90% or higher**, reply with EXACTLY: PASS. If it is below 90%, reply with EXACTLY: FAIL."
+      },
+      "output_to": "coverage_status"
+    },
+    {
+      "title": "Repeat until coverage >= 90%",
+      "action": {
+        "type": "shell",
+        "run": "if [ \"{{coverage_status}}\" = \"FAIL\" ]; then echo \"Retrying...\" && exit 2; fi"
+      }
+    }
+  ]
+}

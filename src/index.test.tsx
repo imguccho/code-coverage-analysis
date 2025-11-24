@@ -1,9 +1,22 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOMClient from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(
+// Mock the root div for createRoot
+const rootDiv = document.createElement('div');
+rootDiv.id = 'root';
+document.body.appendChild(rootDiv);
+
+// Mock createRoot to prevent actual rendering
+const mockRoot = {
+  render: jest.fn(),
+  unmount: jest.fn(),
+};
+jest.spyOn(ReactDOMClient, 'createRoot').mockReturnValue(mockRoot);
+
+const root = ReactDOMClient.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
