@@ -5,13 +5,15 @@ const mockGetFCP = jest.fn();
 const mockGetLCP = jest.fn();
 const mockGetTTFB = jest.fn();
 
-jest.mock('web-vitals', () => ({
+jest.doMock('web-vitals', () => ({
   getCLS: mockGetCLS,
   getFID: mockGetFID,
   getFCP: mockGetFCP,
   getLCP: mockGetLCP,
   getTTFB: mockGetTTFB,
 }));
+
+// Import after mocking
 
 import reportWebVitals from './reportWebVitals';
 

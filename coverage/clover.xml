@@ -1,6 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1763622625308" clover="3.2.0">
-  <project timestamp="1763622625308" name="All files">
-    <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0" elements="0" coveredelements="0" complexity="0" loc="0" ncloc="0" packages="0" files="0" classes="0"/>
+<coverage generated="1763982264639" clover="3.2.0">
+  <project timestamp="1763982264639" name="All files">
+    <metrics statements="32" coveredstatements="23" conditionals="8" coveredconditionals="6" methods="12" coveredmethods="9" elements="52" coveredelements="38" complexity="0" loc="32" ncloc="32" packages="2" files="3" classes="3"/>
+    <package name="src">
+      <metrics statements="8" coveredstatements="2" conditionals="4" coveredconditionals="3" methods="2" coveredmethods="1"/>
+      <file name="reportWebVitals.ts" path="C:\Users\SwatantraMukherjee\github\code-coverage-analysis\src\reportWebVitals.ts">
+        <metrics statements="8" coveredstatements="2" conditionals="4" coveredconditionals="3" methods="2" coveredmethods="1"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="3" type="cond" truecount="3" falsecount="1"/>
+        <line num="5" count="0" type="stmt"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="8" count="0" type="stmt"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.components">
+      <metrics statements="24" coveredstatements="21" conditionals="4" coveredconditionals="3" methods="10" coveredmethods="8"/>
+      <file name="About.tsx" path="C:\Users\SwatantraMukherjee\github\code-coverage-analysis\src\components\About.tsx">
+        <metrics statements="15" coveredstatements="12" conditionals="4" coveredconditionals="3" methods="6" coveredmethods="4"/>
+        <line num="19" count="2" type="stmt"/>
+        <line num="20" count="12" type="stmt"/>
+        <line num="23" count="12" type="stmt"/>
+        <line num="33" count="12" type="stmt"/>
+        <line num="40" count="12" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="44" count="12" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="48" count="12" type="stmt"/>
+        <line num="49" count="72" type="cond" truecount="2" falsecount="0"/>
+        <line num="50" count="36" type="cond" truecount="1" falsecount="1"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="54" count="12" type="stmt"/>
+        <line num="72" count="48" type="stmt"/>
+        <line num="85" count="72" type="stmt"/>
+      </file>
+      <file name="Home.tsx" path="C:\Users\SwatantraMukherjee\github\code-coverage-analysis\src\components\Home.tsx">
+        <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
+        <line num="11" count="2" type="stmt"/>
+        <line num="12" count="15" type="stmt"/>
+        <line num="15" count="15" type="stmt"/>
+        <line num="22" count="15" type="stmt"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="26" count="15" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="30" count="15" type="stmt"/>
+        <line num="48" count="60" type="stmt"/>
+      </file>
+    </package>
   </project>
 </coverage>
