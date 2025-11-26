@@ -25,7 +25,7 @@ const About: React.FC = () => {
     { id: 2, name: 'Mike Chen', position: 'CTO', department: 'Technology', experience: 12 },
     { id: 3, name: 'Emily Davis', position: 'Design Lead', department: 'Design', experience: 8 },
     { id: 4, name: 'David Rodriguez', position: 'Senior Developer', department: 'Engineering', experience: 10 },
-    { id: 5, name: 'Lisa Thompson', position: 'Marketing Manager', department: 'Marketing', experience: 7 },
+    { id: 5, name: 'Lisa Thompson', position: 'Marketing Manager', department: 'Marketing', experience: 4 },
     { id: 6, name: 'James Miller', position: 'Product Manager', department: 'Product', experience: 9 },
   ];
 
@@ -55,7 +55,7 @@ const About: React.FC = () => {
     <div className="about-container">
       <h1>Title - This is About Our Company</h1>
       <p>Learn more about our team and company statistics.</p>
-      
+
       <div className="navigation-buttons">
         <button onClick={handleNavigateToHome} className="nav-button">
           Go to Home
@@ -97,8 +97,8 @@ const About: React.FC = () => {
       <div className="company-description">
         <h2>Our Mission</h2>
         <p>
-          We are dedicated to creating innovative solutions that help businesses grow and succeed. 
-          Our team of experienced professionals works tirelessly to deliver high-quality products 
+          We are dedicated to creating innovative solutions that help businesses grow and succeed.
+          Our team of experienced professionals works tirelessly to deliver high-quality products
           and services that exceed our clients' expectations.
         </p>
       </div>
@@ -106,4 +106,4 @@ const About: React.FC = () => {
   );
 };
 
-export default About; 
+export default About;

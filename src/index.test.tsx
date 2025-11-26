@@ -3,9 +3,12 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+// Create root element for testing
+const rootElement = document.createElement('div');
+rootElement.id = 'root';
+document.body.appendChild(rootElement);
+
+const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
     <App />
@@ -20,13 +23,17 @@ reportWebVitals();
 describe('Index File', () => {
   test('renders App component without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<App />, div);
-    ReactDOM.unmountComponentAtNode(div);
+    const root = ReactDOM.createRoot(div);
+    root.render(<App />);
+    root.unmount();
   });
 
-  test('reportWebVitals function is called', () => {
+  test('reportWebVitals calls web-vitals functions with callback', () => {
     const mockFn = jest.fn();
     reportWebVitals(mockFn);
-    expect(mockFn).toHaveBeenCalled();
+
+    // Since it's async, we need to wait or check mocks
+    // But jest mocks with jest.fn() can be checked
+    expect(mockFn).toHaveBeenCalled(); // The callback should be called synchronously now with mock
   });
 });
