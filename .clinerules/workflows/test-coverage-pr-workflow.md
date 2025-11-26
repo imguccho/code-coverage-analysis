@@ -127,17 +127,75 @@ Improve overall test coverage to minimum 100% for the entire repository and crea
 ```
 
 ## Quick Action Checklist
-1. **Analyze**: Run coverage report to identify gaps
+1. **Analyze**: Run `npm run coverage` to identify gaps (runs in CI mode automatically)
 2. **Fix**: Resolve failing tests and import issues
 3. **Cover**: Add tests for uncovered code paths
-4. **Validate**: Ensure 100% coverage is achieved
+4. **Validate**: Ensure coverage is achieved and run `npm run build`
 5. **Enforce**: Set up automated coverage checks
 6. **Monitor**: Track coverage trends and regressions
-7. **Build Check**: Run build command to ensure no build errors
-8. **Stage**: Add all changes to git staging
-9. **Branch**: Create new feature branch
-10. **Commit**: Commit the coverage improvements
-11. **PR**: Create pull request
+7. **Build Check**: Run `npm run build` command to ensure no build errors
+8. **Stage**: Add all changes to git staging with `git add .`
+9. **Branch**: Create new feature branch with `git checkout -b improved-code-coverage`
+10. **Commit**: Commit the coverage improvements with `git commit -m "Improve test coverage"`
+11. **PR**: Create pull request with pre-configured repo and title
+
+## Commands (Automatically Run in Non-Interactive Mode)
+
+### Coverage Analysis Command
+```bash
+npm run coverage
+```
+*Modified in package.json to include CI=true automatically*
+
+### Direct Coverage Command (Bypassing npm script)
+```bash
+npx cross-env CI=true react-scripts test --coverage --watchAll=false --coverageReporters=text --coverageReporters=lcov
+```
+
+### Automated PR Creation
+```bash
+gh pr create --repo imguccho/code-coverage-analysis --title "Improve Test Coverage" --body "This PR improves test coverage across all metrics." --head improved-code-coverage --base main
+```
+
+**Will it ask for anything in terminal?**
+- **Repo Selection**: NO - The `--repo` flag specifies it explicitly, so no interactive repo selection
+- **GitHub Token**: It MAY ask if:
+  - GH_TOKEN environment variable is not set
+  - GitHub CLI is not authenticated (`gh auth status` shows not logged in)
+  - First-time use of the CLI
+
+### Required Setup (Do this ONCE before running automated commands)
+
+#### Option 1: Environmental Variable (Recommended for automation)
+```bash
+# Set token as environment variable
+export GH_TOKEN=your_personal_access_token_here
+# OR on Windows:
+set GH_TOKEN=your_personal_access_token_here
+
+# Then run the command (will NOT prompt)
+gh pr create --repo imguccho/code-coverage-analysis --title "Improve Test Coverage" --body "This PR improves test coverage." --head improved-code-coverage --base main
+```
+
+#### Option 2: Pre-authenticate GitHub CLI (Interactive once)
+```bash
+# This asks for authentication ONCE, then never again
+gh auth login
+# OR
+gh auth setup-git
+```
+
+#### Option 3: Inline Token (For one-time use)
+```bash
+GH_TOKEN=your_personal_access_token_here gh pr create --repo imguccho/code-coverage-analysis --title "Improve Test Coverage" --body "This PR improves test coverage." --head improved-code-coverage --base main
+```
+
+### Alternative Commands (if --repo flag doesn't work in your environment)
+```bash
+# Change directory to ensure repo context
+cd /path/to/your/repo
+gh pr create --title "Improve Test Coverage" --body "This PR improves test coverage."
+```
 
 ## Summary
 This comprehensive workflow combines systematic test coverage improvement with PR creation. The strategy focuses on achieving 100% test coverage through structured phases, followed by proper version control and PR submission. The timeline ensures steady progress while maintaining quality and concluding with successful submission of improvements.
