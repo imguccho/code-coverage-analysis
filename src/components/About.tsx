@@ -53,9 +53,9 @@ const About: React.FC = () => {
 
   return (
     <div className="about-container">
-      <h1>Title - This is About Our Company</h1>
+      <h1>This is About Our Company</h1>
       <p>Learn more about our team and company statistics.</p>
-      
+
       <div className="navigation-buttons">
         <button onClick={handleNavigateToHome} className="nav-button">
           Go to Home
@@ -97,8 +97,8 @@ const About: React.FC = () => {
       <div className="company-description">
         <h2>Our Mission</h2>
         <p>
-          We are dedicated to creating innovative solutions that help businesses grow and succeed. 
-          Our team of experienced professionals works tirelessly to deliver high-quality products 
+          We are dedicated to creating innovative solutions that help businesses grow and succeed.
+          Our team of experienced professionals works tirelessly to deliver high-quality products
           and services that exceed our clients' expectations.
         </p>
       </div>
