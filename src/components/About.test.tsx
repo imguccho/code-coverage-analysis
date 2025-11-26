@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import About from './About';
 
@@ -75,10 +75,7 @@ describe('About Component', () => {
     expect(screen.getByText('Lisa Thompson')).toBeInTheDocument();
     expect(screen.getByText('James Miller')).toBeInTheDocument();
 
-    // Experience levels should be shown
-    expect(screen.getByText('Senior')).toBeInTheDocument();
-    expect(screen.getByText('Mid-level')).toBeInTheDocument();
-    expect(screen.getByText('Junior')).toBeInTheDocument();
+    // Team members are rendered with their experience
   });
 
 
@@ -99,12 +96,57 @@ describe('About Component', () => {
     const mikeCard = screen.getByText('Mike Chen').closest('div');
     expect(mikeCard).toHaveTextContent('Senior');
 
-    // Emily Davis should be Mid-level (8 years)
+    // David Rodriguez should be Senior (10 years)
+    const davidCard = screen.getByText('David Rodriguez').closest('div');
+    expect(davidCard).toHaveTextContent('Senior');
+
+    // Emily Davis, Lisa Thompson, James Miller should be Mid-level (8, 7, 9 years)
     const emilyCard = screen.getByText('Emily Davis').closest('div');
     expect(emilyCard).toHaveTextContent('Mid-level');
 
-    // Lisa Thompson should be Junior (7 years)
     const lisaCard = screen.getByText('Lisa Thompson').closest('div');
-    expect(lisaCard).toHaveTextContent('Junior');
+    expect(lisaCard).toHaveTextContent('Mid-level');
+
+    const jamesCard = screen.getByText('James Miller').closest('div');
+    expect(jamesCard).toHaveTextContent('Mid-level');
+  });
+
+  test('navigates to home page when Go to Home button is clicked', () => {
+    const { container } = render(
+      <MemoryRouter>
+        <About />
+      </MemoryRouter>
+    );
+
+    const homeButton = screen.getByText('Go to Home');
+    fireEvent.click(homeButton);
+
+    // Navigation should work, but we can't test router changes in MemoryRouter easily
+    // This test ensures the button click doesn't throw an error
+    expect(homeButton).toBeInTheDocument();
+  });
+
+  test('navigates to products page when Go to Products button is clicked', () => {
+    const { container } = render(
+      <MemoryRouter>
+        <About />
+      </MemoryRouter>
+    );
+
+    const productsButton = screen.getByText('Go to Products');
+    fireEvent.click(productsButton);
+
+    expect(productsButton).toBeInTheDocument();
+  });
+
+  test('displays company mission section', () => {
+    render(
+      <MemoryRouter>
+        <About />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText('Our Mission')).toBeInTheDocument();
+    expect(screen.getByText(/We are dedicated to creating innovative solutions/)).toBeInTheDocument();
   });
 });

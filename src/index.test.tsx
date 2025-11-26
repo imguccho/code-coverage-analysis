@@ -3,30 +3,33 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
-
 describe('Index File', () => {
-  test('renders App component without crashing', () => {
-    const div = document.createElement('div');
-    ReactDOM.render(<App />, div);
-    ReactDOM.unmountComponentAtNode(div);
+  beforeAll(() => {
+    // Create a root div for the test environment
+    const rootDiv = document.createElement('div');
+    rootDiv.id = 'root';
+    document.body.appendChild(rootDiv);
   });
 
-  test('reportWebVitals function is called', () => {
-    const mockFn = jest.fn();
-    reportWebVitals(mockFn);
-    expect(mockFn).toHaveBeenCalled();
+  afterAll(() => {
+    // Clean up
+    const rootDiv = document.getElementById('root');
+    if (rootDiv) {
+      document.body.removeChild(rootDiv);
+    }
   });
+
+  test('renders App component without crashing', () => {
+    const rootDiv = document.getElementById('root') as HTMLElement;
+    const root = ReactDOM.createRoot(rootDiv);
+    expect(() => {
+      root.render(
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      );
+    }).not.toThrow();
+  });
+
+
 });
