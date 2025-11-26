@@ -7,10 +7,10 @@ module.exports = {
   ],
   coverageThreshold: {
     global: {
-      branches: 80,
-      functions: 80,
-      lines: 80,
-      statements: 80,
+      branches: 93,
+      functions: 95,
+      lines: 83,
+      statements: 83,
     },
   },
   coverageReporters: ['text', 'lcov', 'html'],
@@ -20,6 +20,7 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
   moduleNameMapper: {
-    '^react-router-dom$': '<rootDir>/src/__mocks__/react-router-dom.ts',
+    '^react-router-dom$': '<rootDir>/src/__mocks__/react-router-dom.tsx',
+    '^web-vitals$': '<rootDir>/src/__mocks__/web-vitals.ts',
   },
 };
