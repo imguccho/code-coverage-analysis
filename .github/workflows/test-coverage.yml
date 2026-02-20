@@ -9,7 +9,7 @@ on:
         default: 'main'
         type: string
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, main-test ]
   pull_request:
     branches: [ main ]
 
