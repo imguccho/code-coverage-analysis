@@ -25,7 +25,7 @@ const About: React.FC = () => {
     { id: 2, name: 'Mike Chen', position: 'CTO', department: 'Technology', experience: 12 },
     { id: 3, name: 'Emily Davis', position: 'Design Lead', department: 'Design', experience: 8 },
     { id: 4, name: 'David Rodriguez', position: 'Senior Developer', department: 'Engineering', experience: 10 },
-    { id: 5, name: 'Lisa Thompson', position: 'Marketing Manager', department: 'Marketing', experience: 4 },
+    { id: 5, name: 'Lisa Thompson', position: 'Marketing Manager', department: 'Marketing', experience: 7 },
     { id: 6, name: 'James Miller', position: 'Product Manager', department: 'Product', experience: 9 },
   ];
 
