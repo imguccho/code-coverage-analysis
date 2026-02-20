@@ -39,7 +39,7 @@ jobs:
     # 4. Run tests with coverage (force success)
     - name: Run tests with coverage
       run: |
-        npm run test:coverage -- --watchAll=false || true
+        npm run test:coverage -- --watchAll=false
         echo "Tests completed (exit code ignored for coverage purposes)"
 
     # 5. Verify coverage directory exists
@@ -73,4 +73,5 @@ jobs:
         echo "🌿 Branch: ${{ github.event.inputs.branch || github.ref_name }}"
 
       if: always()
+
 
