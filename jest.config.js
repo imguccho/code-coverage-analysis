@@ -13,7 +13,7 @@ module.exports = {
       statements: 80,
     },
   },
-  coverageReporters: ['text', 'lcov', 'html'],
+  coverageReporters: ['json', 'text', 'lcov', 'html'],
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
   moduleNameMapping: {
